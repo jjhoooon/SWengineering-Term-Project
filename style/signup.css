@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+*{
+    font-family: 'poppins',sans-serif;
+}
+
+.formbox{
+    position: relative;
+    width: 500px;
+    height: 450px;
+    border: 2px solid black;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: whitesmoke;
+}
+
+.formbox h1{
+    color: #0f2027;
+    text-align: center;
+}
+
+.formbox button{
+    padding: 10px;
+}
+
+
+/*----------------------------------*/
+
+#login{
+    background-image: url(../Background.jpeg);
+    min-height: 100vh;
+}
+
+form div{
+    margin-bottom:14px;
+}
+
+label {
+    font-size: 1.125rem;
+    margin-bottom:10px;
+    display:block;
+}
+input[type="text"],
+input[type="PW"]{
+    width: 100%;
+    max-width:240px;
+}
+textarea{
+    width:100%;
+    max-width: 480px;
+    height: 6rem;
+}
+input[type="submit"]{
+    border:none;
+    cursor: pointer;
+    line-height: 1;
+}
