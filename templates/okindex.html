@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Software Engineering Term Project">
+    <title>Coin Market</title>
+
+    <!--CSS-->
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+    <link href="../static/css/index.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 사용자 정보가 없으면 로그인 실패, flash('Username과 Password를 다시 확인해주세요.')  -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <script>
+        alert('{{ messages[0] }}');
+    </script>
+    {% endif %}
+    {% endwith %}
+    <div id="home" class="big-bg">
+        <header class="page-header wrapper">
+            <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
+            <nav>
+                <ul class="main-nav">
+                    <li><a href="overview.html">Overview</a></li>
+                    <li><a href="signup.html">Account</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="home-content wrapper">
+            <h2 class="page-title">We'll Make Your Day</h2>
+            <p>행운의 거래소에서 행운을 가지세요. 당신의 트레이딩 능력을 높여줍니다.</p>
+            <a class="button" href="menu.html">메뉴 보기</a>
+        </div><!-- /.home-content-->                                      
+    </div><!-- /#home -->
+</body>
+</html>

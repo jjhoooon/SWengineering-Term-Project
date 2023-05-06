@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Software Engineering Term Project">
+    <title>Coin Market</title>
+
+    <!--CSS-->
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+    <link href="../static/css/index.css" rel="stylesheet">
+</head>
+<body>
+    <div id="home" class="big-bg">
+        <header class="page-header wrapper">
+            <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
+            <nav>
+                <ul class="main-nav">
+                    <li><a href="overview.html">Overview</a></li>
+                    <li><a href="{{ url_for('login') }}">로그인해줘</a>
+                    <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="home-content wrapper">
+            <h2 class="page-title">We'll Make Your Day</h2>
+            <p>행운의 거래소에서 행운을 가지세요. 당신의 트레이딩 능력을 높여줍니다.</p>
+        </div><!-- /.home-content-->                                      
+    </div><!-- /#home -->
+</body>
+</html>
