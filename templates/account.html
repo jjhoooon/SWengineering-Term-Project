@@ -1,22 +1,28 @@
-<!--
-  Account 에서는 
-  1. 돈을 추가/출금할 수 있는 기능
-  2. 코인을 사면 업데이트 되는 기능 
--->
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Software Engineering Term Project">
-    <title>Coin Market</title>
-
-    <!--CSS-->
-    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
-    <link href="../static/css/index.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
+
 <body>
-  <div>
-  </div>
+    <h1>Account</h1>
+    <h2>Money:</h2>
+    <ul>
+        {% for item in money %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Coin:</h2>
+    <ul>
+        {% for item in coin %}
+        <li>{{ item }}</li>
+        {% endfor %}
+    </ul>
 </body>
+
+
+</html>
