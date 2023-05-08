@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, session, escape
+from flask import Flask, render_template, request, redirect, url_for, session, escape, jsonify
 from flask_pymongo import PyMongo
 from flask import flash
 
 app = Flask(__name__)
-#111
+
 #session 사용하기위한 secret_key 
 app.secret_key = 'software_engineering'
 
@@ -13,6 +13,7 @@ mongo = PyMongo(app)
 
 # 사용자 정보를 담을 MongoDB 컬렉션
 users = mongo.db.users
+history = mongo.db.trade_history
 
 @app.route('/logout')
 def logout():
@@ -67,12 +68,26 @@ def signup_post():
     # 사용자 정보를 MongoDB에 등록
     post = {
         'username': username,
-        'password': password
+        'password': password,
+        'money' : 0,
+        'coin' : 0
     }
     users.insert_one(post)
 
     # 회원가입 성공 메시지 출력 후 로그인 페이지로 이동
     return redirect(url_for('index'))
+
+
+    # user 계좌 정보 불러오기.
+@app.route('/account')
+def account():
+    money_collection = users['account_money']  # Money 컬렉션 선택
+    coin_collection = users['account_coin']  # Coin 컬렉션 선택
+
+    money = money_collection.find()  # Money 데이터 가져오기
+    coin = coin_collection.find()  # Coin 데이터 가져오기
+
+    return render_template('account.html', money=money, coin=coin)
 
 if __name__ == '__main__':
     app.run(debug=True) 
