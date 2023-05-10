@@ -88,7 +88,7 @@ def account():
         money_data=users.find_one({},{"money":1}) # username이 맞는 계정 불러오기
         coin_data=users.find_one({},{"coin":1}) # username이 맞는 계정 불러오기
         #mongodb find( , )에서 뒤에 필드 쓸 부분만 불러와서 in}t형으로 바꿔보자
-        return render_template('account.html', money=money_data,coin=coin_data)
+        return render_template('account.html', md=money_data,cd=coin_data)
 
 if __name__ == '__main__':
     app.run(debug=True) 
