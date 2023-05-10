@@ -25,9 +25,9 @@ def logout():
 def index():
     return render_template('index.html')
 
-@app.route('/okindex')
-def okindex():
-    return render_template('okindex.html')
+@app.route('/okindex/<username>')
+def okindex(username):
+    return render_template('okindex.html',username=username)
 
 @app.route('/login')
 def login():
@@ -48,7 +48,7 @@ def login_post():
 
     # 사용자 정보가 있으면 로그인 성공
     # return 'Welcome, {}'.format(username)
-    return redirect(url_for('okindex'))
+    return redirect(url_for('okindex',username=username))
 
 @app.route('/signup')
 def signup():
@@ -82,11 +82,12 @@ def signup_post():
     # user 계좌 정보 불러오기.
 
 # account는 원래 있는 정보를 받아서 사용하는 거니 (입력 x) GET 형식으로 받아야 함
-@app.route('/account',methods=['GET'])
-def account():
-        # username=request.args.get('username')
-        money_data=users.find_one({},{"money":1}) # username이 맞는 계정 불러오기
-        coin_data=users.find_one({},{"coin":1}) # username이 맞는 계정 불러오기
+@app.route('/account/<username>',methods=['GET'])
+def account(username): # url로 부를 때 <username>을 받아오는 걸로 해보자!
+        # 근데 이제 회원 정보에 맞는 money와 coin을 구해야함
+        # 이 때 회원 정보에 맞는 document만 찾고 싶을 땐 find_one을 사용해야 함
+        money_data=users.find_one({"username":username},{"money":1}) # username이 맞는 계정 불러오기
+        coin_data=users.find_one({"username":username},{"coin":1}) # username이 맞는 계정 불러오기
         #mongodb find( , )에서 뒤에 필드 쓸 부분만 불러와서 in}t형으로 바꿔보자
         return render_template('account.html', md=money_data,cd=coin_data)
 
