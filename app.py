@@ -56,38 +56,39 @@ def signup():
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
-    username = request.form['username']
-    password = request.form['password']
+    if request.method=="POST":
+        username = request.form['username']
+        password = request.form['password']
 
-    # MongoDB에서 이미 등록된 사용자인지 확인
-    user = users.find_one({'username': username})
-    if user:
-        flash('이미 사용중인 username입니다')
-        return redirect(url_for('signup'))
+        # MongoDB에서 이미 등록된 사용자인지 확인
+        user = users.find_one({'username': username})
+        if user:
+            flash('이미 사용중인 username입니다')
+            return redirect(url_for('signup'))
 
-    # 사용자 정보를 MongoDB에 등록
-    post = {
-        'username': username,
-        'password': password,
-        'money' : 0,
-        'coin' : 0
-    }
-    users.insert_one(post)
+        # 사용자 정보를 MongoDB에 등록
+        post = {
+            'username': username,
+            'password': password,
+            'money' : 0,
+            'coin' : 0
+        }
+        users.insert_one(post)
 
-    # 회원가입 성공 메시지 출력 후 로그인 페이지로 이동
-    return redirect(url_for('index'))
+        # 회원가입 성공 메시지 출력 후 로그인 페이지로 이동
+        return redirect(url_for('index'))
 
 
     # user 계좌 정보 불러오기.
-@app.route('/account')
+
+# account는 원래 있는 정보를 받아서 사용하는 거니 (입력 x) GET 형식으로 받아야 함
+@app.route('/account',methods=['GET'])
 def account():
-    money_collection = users['account_money']  # Money 컬렉션 선택
-    coin_collection = users['account_coin']  # Coin 컬렉션 선택
-
-    money = money_collection.find()  # Money 데이터 가져오기
-    coin = coin_collection.find()  # Coin 데이터 가져오기
-
-    return render_template('account.html', money=money, coin=coin)
+        # username=request.args.get('username')
+        money_data=users.find_one({},{"money":1}) # username이 맞는 계정 불러오기
+        coin_data=users.find_one({},{"coin":1}) # username이 맞는 계정 불러오기
+        #mongodb find( , )에서 뒤에 필드 쓸 부분만 불러와서 in}t형으로 바꿔보자
+        return render_template('account.html', md=money_data,cd=coin_data)
 
 if __name__ == '__main__':
     app.run(debug=True) 
