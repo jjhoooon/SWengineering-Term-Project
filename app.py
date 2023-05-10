@@ -88,8 +88,15 @@ def account(username): # url로 부를 때 <username>을 받아오는 걸로 해
         # 이 때 회원 정보에 맞는 document만 찾고 싶을 땐 find_one을 사용해야 함
         money_data=users.find_one({"username":username},{"money":1}) # username이 맞는 계정 불러오기
         coin_data=users.find_one({"username":username},{"coin":1}) # username이 맞는 계정 불러오기
-        #mongodb find( , )에서 뒤에 필드 쓸 부분만 불러와서 in}t형으로 바꿔보자
         return render_template('account.html', md=money_data,cd=coin_data)
 
 if __name__ == '__main__':
     app.run(debug=True) 
+
+@app.route('/overview')
+def overview():
+    return render_template('overview.html')
+
+# @app.route('/')
+# def index():
+#     return render_template('index.html')
