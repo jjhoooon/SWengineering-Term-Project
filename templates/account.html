@@ -1,23 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>계좌정보</title>
+    <script>
+        function updateMoney(){
+            var newMoney = prompt('입금하실 금액을 입력하세요!');
+            if(newMoney !== null){
+                var form=document.createElement('form');
+                form.method = 'POST';
+                form.action = '/update_money/{{username}}';
+
+                var input=document.createElement('input');
+                input.type = 'hidden';
+                input.type = 'new_money';;
+                input.type = newMoney;
+
+                form.appendChild(input); // 폼에 input 엘리먼트 추가
+
+                document.body.appendChild(form); // 폼을 문서에 추가
+
+                form.submit();
+            }
+        }
+    </script>
 </head>
 
 <body>
-    <h1>Account</h1>
-    <h2>Money:</h2>
-    <ul>
-        <li>{{ md.money }}</li>
-    </ul>
-    <h2>Coin:</h2>
-    <ul>
-        <li>{{ cd.coin }}</li>
-    </ul>
+    <h1>Welcome to your account!</h1>
+    <h2>Username : {{username}}</h2>
+    <p>Your money : {{money.money}}</p>
+    <p>Your coin : {{coin.coin}}</p>
+    <button onclick="updateMoney()">입금하기</button>
 </body>
 
 
