@@ -89,14 +89,14 @@ def account(username): # url로 부를 때 <username>을 받아오는 걸로 해
         return render_template('account.html', money=money_data,coin=coin_data,username=username)
 
     #입금 시, 잔액 업데이트
-@app.route('/update_money/<username>', methods=['POST'])    
+@app.route('/update_money/<username>', methods=['GET','POST'])    
 def update_money(username):
     
     new_money = int(request.form.get('new_money'))
     
     #mongoDB에서 해당 사용자의 money 값 가져오기
     user = users.find_one({'username': username})
-    current_money = user['money']
+    current_money = int(user['money'])
     
     #새로운 money 값 계산
     updated_money = current_money + new_money
@@ -104,7 +104,10 @@ def update_money(username):
     #mongoDB에 해당 사용자 money 값 업데이트
     users.update_one({'username':username},{"$set":{"money": updated_money}})
     
-    return render_template('account.html', money=updated_money,username=username) #coin=coin_data,
+    money_data=users.find_one({"username":username},{"money":1}) # username이 맞는 계정 불러오기
+    coin_data=users.find_one({"username":username},{"coin":1}) # username이 맞는 계정 불러오기
+    
+    return render_template('account.html', money=money_data,coin=coin_data,username=username)
 if __name__ == '__main__':
     app.run(debug=True) 
     
