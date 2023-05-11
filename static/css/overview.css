@@ -102,6 +102,9 @@ main{
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  /* position: relative는 원래 배치되어야 할 곳을 기준으로 상하좌우 떨어짐 (다른 요소와 떨어지게 하기 위해 사용) */
+  position: relative;
+  top: 200px;
 }
 
 .trading_button{
