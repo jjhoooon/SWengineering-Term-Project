@@ -1,41 +1,63 @@
 <!DOCTYPE html>
 <html lang="ko">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>계좌정보</title>
-    <script>
-        function updateMoney(){
-            var newMoney = prompt('입금하실 금액을 입력하세요!');
-            if(newMoney !== null){
-                var form=document.createElement('form');
-                form.method = 'POST';
-                form.action = '/update_money/{{username}}';
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Software Engineering Term Project">
+        <title>계좌정보</title>
 
-                var input=document.createElement('input');
-                input.type = 'hidden';
-                input.type = 'new_money';;
-                input.type = newMoney;
+        <!--CSS-->
+        <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+        <link href="../static/css/index.css" rel="stylesheet">
+        <link href="../static/css/account.css" rel="stylesheet">
 
-                form.appendChild(input); // 폼에 input 엘리먼트 추가
+        <script>
+            function updateMoney() {
+                var newMoney = prompt('입금하실 금액을 입력하세요!');
+                if (newMoney !== null) {
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/update_money/{{username}}';
 
-                document.body.appendChild(form); // 폼을 문서에 추가
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.type = 'new_money';;
+                    input.type = newMoney;
 
-                form.submit();
+                    form.appendChild(input); // 폼에 input 엘리먼트 추가
+
+                    document.body.appendChild(form); // 폼을 문서에 추가
+
+                    form.submit();
+                }
             }
-        }
-    </script>
-</head>
-
-<body>
-    <h1>Welcome to your account!</h1>
-    <h2>Username : {{username}}</h2>
-    <p>Your money : {{money.money}}</p>
-    <p>Your coin : {{coin.coin}}</p>
-    <button onclick="updateMoney()">입금하기</button>
-</body>
-
+        </script>
+    </head>
+    <body>
+        <div id="home" class="big-bg">
+            <header class="page-header wrapper">
+                <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
+                            alt="마켓 홈"></a></h1>
+                <nav>
+                    <ul class="main-nav">
+                        <li><a href="overview.html">Overview</a></li>
+                        <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a>
+                    </ul>
+                </nav>
+            </header>
+            <div class="home-content wrapper">
+                <div class="account_wrapper">
+                    <h1>Welcome to your account!</h1>
+                    <h2>Username! : {{username}}</h2>
+                    <p>Your money : {{money.money}}</p>
+                    <p>Your coin : {{coin.coin}}</p>
+                    <button onclick="updateMoney()">입금하기!!</button>
+                </div>
+            </div><!-- /.home-content-->
+        </div><!-- /#home -->
+    </body>
 
 </html>
