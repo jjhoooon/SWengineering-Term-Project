@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+header{
+  /* 내용을 center로 두고 싶을 때 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#price_chart{
+  width:800px;
+  height: 700px;
+  float:left;
+}
+
+.history{
+  width: 400px; 
+  height: 400px;
+  /* overflow는 content가 범위를 벗어날 경우 스크롤 생성해준다 */
+  overflow: auto;
+  overflow-x: hidden;
+  margin-right: 80px;
+  margin-left: 200px;
+}
+
+.history_table{
+  text-align:right; 
+  width: 350px; 
+  height: 400px;
+  /* header의 content를 수평 정렬하고 싶을 때 */
+  float:left;
+  /* 그냥 border 설정을 안하면 테이블 테두리가 없다. */
+  /* border-collapse 라는 속성에서 collapse는 인접한 셀 간의 경계선을 합치는 역할 */
+  border-collapse: collapse;
+  overflow: scroll;
+}
+
+.history_table th.price_th, th.change_th{
+  width:100px;
+  height: 30px;
+}
+
+.history_table td.price_td, td.change_td{
+  height: 20px;
+  border-bottom: 2px solid #182026;
+}
+
+.go_trading{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.trading_button{
+  font-size: 1.375rem;
+  background : #0bd;
+  color: #fff;
+  border-radius: 5px;
+  border:none;
+  padding: 18px 32px;
+}

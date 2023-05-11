@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Overview</title>
     <!-- 코인 시세 변동 차트 -->
-    <!-- 이건 예시라 나중에 바꾸자 -->
+    <!-- 이건 예시라 나중에 trading을 제대로 만들고 바꾸자 -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
@@ -15,11 +15,12 @@
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses'],
-          ['2004',  1000,      400],
-          ['2005',  1170,      460],
-          ['2006',  660,       1120],
-          ['2007',  1030,      540]
+          ['time', 'price'],
+          ['11H',  1000],
+          ['12H',  1170],
+          ['13H',  660],
+          ['14H',  1030]
+          // 이 부분 더 늘리자
         ]);
 
         var options = {
@@ -33,19 +34,49 @@
         chart.draw(data, options);
       }
     </script>
+    <link href="../static/css/overview.css" rel="stylesheet">
   </head>
 
 <!--
   Overview에서는
-  코인 시세랑 거래 내역
-  1. 마켓플레이스에서 하는 거래 내용
-  2. 유저 간의 거래 내용
-  따로 섹션 나눠서 해야될 듯!
+  
+  오른쪽에 코인 시세 , 왼쪽에 거래 내역
 
   price chart page
   trading page 들어가는 버튼
   이 형식 !
 -->
 <body>
-  <div id="price_chart" style="text-align:center;width:700px;height:600px;"></div>
-</body>
+  <header>
+    <div class="history">
+      <table class="history_table">
+        <tr>
+          <th class="price_th">Last Price</th> <!-- flask나 mongodb에서 시간 계산하는거 있으면 그걸 통해서 가장 최근 거래 가격 표시 -->
+          <th class="change_th">Change</th> <!-- 여기서 trading 페이지에서 거래했던 가격을 통해 %로 + - 표시 -->
+        </tr>
+        <tr>
+          <td class="price_td"></td>
+          <td class="change_td"></td>
+        </tr>
+        <tr>
+          <td class="price_td"></td>
+          <td class="change_td"></td>
+        </tr>
+        <tr>
+          <td class="price_td"></td>
+          <td class="change_td"></td>
+        </tr>
+        <tr>
+          <td class="price_td"></td>
+          <td class="change_td"></td>
+        </tr>
+      </table>
+    </div>
+    <!-- 일단 차트 보여주는 price chart 부분 -->
+    <div id="price_chart"></div> 
+  </header>
+  <!-- onClick으로 flask url을 다루려면 window.location.href을 사용하고 url을 '/trading' 로 한다-->
+  <section class="go_trading">
+    <button class="trading_button" onClick="window.location.href='/trading'">Go to Trade</button>
+  </section>
+  </body>

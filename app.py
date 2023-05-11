@@ -97,6 +97,10 @@ if __name__ == '__main__':
 def overview():
     return render_template('overview.html')
 
+@app.route('/trading')
+def trading():
+    return render_template('trading.html')
+
 # @app.route('/')
 # def index():
 #     return render_template('index.html')
