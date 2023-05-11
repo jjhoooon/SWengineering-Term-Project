@@ -34,6 +34,8 @@
         chart.draw(data, options);
       }
     </script>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
     <link href="../static/css/overview.css" rel="stylesheet">
   </head>
 
@@ -47,7 +49,18 @@
   이 형식 !
 -->
 <body>
-  <header>
+  <header class="page-header">
+    <h1 class="h1_logo"><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
+    <nav>
+      <ul class="main-nav">
+          <li><a href="{{ url_for('overview') }}">Overview</a></li>
+          <li><a href="{{ url_for('login') }}">로그인해줘</a>
+          <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+      </ul>
+    </nav>
+  </header>
+  <!-- 메인 내용을 담는 layout은 main태그 -->
+  <main>
     <div class="history">
       <table class="history_table">
         <tr>
@@ -74,7 +87,7 @@
     </div>
     <!-- 일단 차트 보여주는 price chart 부분 -->
     <div id="price_chart"></div> 
-  </header>
+  </main>
   <!-- onClick으로 flask url을 다루려면 window.location.href을 사용하고 url을 '/trading' 로 한다-->
   <section class="go_trading">
     <button class="trading_button" onClick="window.location.href='/trading'">Go to Trade</button>
