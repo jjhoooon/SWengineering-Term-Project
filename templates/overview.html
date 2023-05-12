@@ -71,7 +71,7 @@ change에 적용
     <h1 class="h1_logo"><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
     <nav>
       <ul class="main-nav">
-          <li><a href="{{ url_for('overview') }}">Overview</a></li>
+          <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
           <li><a href="{{ url_for('login') }}">로그인해줘</a>
           <li><a href="{{ url_for('signup') }}">Sign up</a></li>
       </ul>
@@ -106,8 +106,4 @@ change에 적용
     <!-- 일단 차트 보여주는 price chart 부분 -->
     <div id="price_chart"></div> 
   </main>
-  <!-- onClick으로 flask url을 다루려면 window.location.href을 사용하고 url을 '/trading' 로 한다-->
-  <section class="go_trading">
-    <button class="trading_button" onClick="window.location.href='/trading'">Go to Trade</button>
-  </section>
   </body>

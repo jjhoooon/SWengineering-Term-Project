@@ -25,7 +25,7 @@
             <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
             <nav>
                 <ul class="main-nav">
-                    <li><a href="{{ url_for('overview') }}">Overview</a></li>
+                    <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
                     <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a>
                 </ul>
@@ -35,7 +35,7 @@
         <div class="home-content wrapper">
             <h2 class="page-title">We'll Make Your Day</h2>
             <p>행운의 거래소에서 행운을 가지세요. 당신의 트레이딩 능력을 높여줍니다.</p>
-            <a class="button" href="menu.html">메뉴 보기</a>
+            <a class="button" href="{{url_for('overview')}}">메뉴 보기</a>
         </div><!-- /.home-content-->                                      
     </div><!-- /#home -->
 </body>
