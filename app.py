@@ -118,9 +118,9 @@ if __name__ == '__main__':
 #추가적으로, 2번에서 html에서 받은 데이터 타입과 DB의 데이터 타입을 생각해봐야함!
     app.run(debug=True) 
 
-@app.route('/overview')
-def overview():
-    return render_template('overview.html')
+@app.route('/overview/<username>')
+def overview(username):
+    return render_template('overview.html',username=username)
 
 @app.route('/trading/<username>')
 def trading(username):
@@ -128,7 +128,7 @@ def trading(username):
     coin_data=users.find_one({'username':username},{'coin':1})
     mk=market.find_one({})
     market_coin=int(mk['coin'])
-    return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=market_coin)
+    return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin)
 
 @app.route('/market_trading/<username>', methods=['GET','POST'])
 def market_trading(username):
@@ -137,7 +137,7 @@ def market_trading(username):
     
     market_trading=int(request.form.get('market_trading'))
     
-    mk=market.find_one({})
+    mk=market.find_one({}) # market 정보 불러오기
     user = users.find_one({'username':username}) # 로그인한 사용자 찾기
     
     # 마켓 코인 < 구매할 코인 이면 오류 발생 시켜야 함

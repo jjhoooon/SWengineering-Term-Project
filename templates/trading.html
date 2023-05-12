@@ -37,6 +37,7 @@
     따로 섹션 나눠서 해야될 듯!
 -->
   <body>
+    <!-- 이걸 해야 flash가 뜸 -->
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <script>
@@ -57,24 +58,35 @@
       ㄴ 그리고 판매 게시글 제목을 <a> 태그로 하고 클릭하면 게시글로 들어갈 수 있게 하자
       밑에 판매 게시글 작성 버튼
     -->
-    <div class="coin_market">
-      <h1>Coin Market</h1>
-      <h2>Market Coin : {{market_coin}}</h2>
-      <br><br>
-      <!-- 거래하기 버튼.
-      버튼 클릭하면 coin_trading 함수가 실행되고
-      그 함수에서 coin_trading url로 이동 (flask)
-      -->
-      <button class="market_buy" onclick="market_trading()">구매 하기</button>
-    </div>
+    <header class="page-header">
+      <h1 class="h1_logo"><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
+      <nav>
+        <ul class="main-nav">
+            <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
+            <li><a href="{{ url_for('login') }}">로그인해줘</a>
+            <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="coin_market">
+        <h1>Coin Market</h1>
+        <h2>Market Coin : {{market_coin}}</h2>
+        <br><br>
+        <!-- 거래하기 버튼.
+        버튼 클릭하면 coin_trading 함수가 실행되고
+        그 함수에서 coin_trading url로 이동 (flask)
+        -->
+        <button class="market_buy" onclick="market_trading()">구매 하기</button>
+      </div>
 
-    <div class="account_div">
-      <h2></h2>
-    </div>
+      <div class="account_div">
+        <h2>Account money : {{money.money}}</h2>
+        <h2>Account coin : {{coin.coin}}</h2>
+      </div>
 
-    <div class="sale_post">
-      <h2>Account money : {{money.money}}</h2>
-      <h2>Account coin : {{coin.coin}}</h2>
-    </div>
+      <div class="sale_post">
+      </div>
+    </main>
   </body>
 </html>
