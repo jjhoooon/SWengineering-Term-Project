@@ -27,6 +27,9 @@
         }
       }
     </script>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+    <link href="../static/css/trading.css" rel="stylesheet">
   </head>
   <!--
     1. 마켓플레이스에서 하는 거래 내용
@@ -59,16 +62,14 @@
       밑에 판매 게시글 작성 버튼
     -->
     <header class="page-header">
-      <h1 class="h1_logo"><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
+      <h1 class="h1_logo"><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
       <nav>
         <ul class="main-nav">
-            <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
-            <li><a href="{{ url_for('login') }}">로그인해줘</a>
-            <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
       </nav>
     </header>
-    <main>
+    <main class="trading_main">
       <div class="coin_market">
         <h1>Coin Market</h1>
         <h2>Market Coin : {{market_coin}}</h2>

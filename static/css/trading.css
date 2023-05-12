@@ -4,6 +4,7 @@ body{
   font-family: "나눔고딕", NanumGothic, "맑은고딕", MalgunGothic, "Apple SD Gothic Neo", sans-serif;
   line-height: 1.7;
   color: #432;
+  display: flex;
 }
 
 img{
@@ -49,4 +50,16 @@ img{
   position: absolute;
   top: 10px;
   left: 100px;
+}
+
+.trading_main{
+  justify-content: center;
+  position: relative;
+  top: 200px;
+  left: 100px;
+}
+
+.account_div{
+  position: relative;
+  top: 100px;
 }
