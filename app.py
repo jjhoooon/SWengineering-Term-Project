@@ -13,10 +13,7 @@ mongo = PyMongo(app)
 
 # 사용자 정보를 담을 MongoDB 컬렉션
 users = mongo.db.users
-history = mongo.db.history
-market = mongo.db.market
-post = mongo.db.post
-
+history = mongo.db.trade_history
 
 @app.route('/logout')
 def logout():
@@ -112,11 +109,43 @@ def update_money(username):
     
     return render_template('account.html', money=money_data,coin=coin_data,username=username)
 if __name__ == '__main__':
-    app.run(debug=True) 
     
 
 #현재 에러 발생!! (2가지를 고려해봐야함)
 #1. account.html 에서 username과 input값을 flask에 제대로 전송했는지
 #2. flask, '/update_money'에서 mongodb의 money_field 업데이트 코드가 맞는지
 #추가적으로, 2번에서 html에서 받은 데이터 타입과 DB의 데이터 타입을 생각해봐야함!
+    app.run(debug=True) 
+
+@app.route('/overview')
+def overview():
+    return render_template('overview.html')
+
+@app.route('/trading/<username>')
+def trading(username):
+    money_data=users.find_one({'username':username},{'money':1})
+    coin_data=users.find_one({'username':username},{'coin':1})
+    mk=market.find_one({})
+    market_coin=int(mk['coin'])
+    return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=market_coin)
+
+@app.route('/market_trading/<username>', methods=['GET','POST'])
+def market_trading(username):
+    # def coin_trading() 함수로 로그인한 사용자의 coin 개수와 money 개수를 변경 
+    # 그리고 render_template('trading.html')
+    market_trading=int(request.form.get('market_trading'))
+    user = users.find_one({'username':username}) # 로그인한 사용자 찾기
+    # coin update => 현재 보유한 coin + 구매한 코인 개수
+    # money update => 현재 보유한 money - (구매한 코인 개수 x 100) 
+    # 마켓 코인은 100원이기 때문!
+    updated_coin=int(user['coin'])+market_trading
+    updated_money=int(user['money'])-(market_trading*100)
+    users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
+    # 그리고 마켓 보유 코인도 update 해줘야 함
+    # 원래 보유 코인 개수 - 구매한 코인 개수
+    mk=market.find_one({})
+    updated_market_coin= int(mk['coin'])-market_trading # 마켓 보유 코인 update 
+    market.update_one({},{"$set":{'coin':updated_market_coin}})
+    
+    return render_template('trading.html',market_coin=updated_market_coin)
 

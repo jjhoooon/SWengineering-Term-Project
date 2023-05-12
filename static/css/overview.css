@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+body{
+  font-family: "나눔고딕", NanumGothic, "맑은고딕", MalgunGothic, "Apple SD Gothic Neo", sans-serif;
+  line-height: 1.7;
+  color: #432;
+}
+
+img{
+  max-width: 100%;
+}
+
+.logo{
+  width: 210px;
+  margin-top: 14px;
+}
+
+.page-header{
+  display:flex;
+  justify-content:space-between;
+}
+
+.main-nav{
+  /* display: flex; 속성은 Flexbox 레이아웃을 생성하기 위해 사용.
+  Flexbox는 요소들을 가로 또는 세로 축을 기준으로 정렬하고 배치하는 기능을 제공
+  기본적으로는 가로 축을 기준으로 정렬*/
+  display: flex;
+  font-size: 1.25rem;
+  text-transform:uppercase;
+  list-style:none;
+  position: absolute;
+  top: 34px;
+  right: 200px;
+}
+
+.main-nav li{
+  margin-left:36px;
+}
+
+.main-nav a{
+  color:#432;
+}
+
+.main-nav a:hover{
+  color: #0bd;
+}
+
+.h1_logo{
+  position: absolute;
+  top: 10px;
+  left: 100px;
+}
+
+main{
+  /* 내용을 center로 두고 싶을 때 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 200px;
+}
+
+#price_chart{
+  width:800px;
+  height: 700px;
+  float:left;
+}
+
+.history{
+  width: 400px; 
+  height: 400px;
+  /* overflow : auto는 content가 범위를 벗어날 경우 스크롤 생성해준다 */
+  overflow: auto;
+  overflow-x: hidden;
+  margin-right: 80px;
+  margin-left: 200px;
+}
+
+.history_table{
+  text-align:center; 
+  width: 350px; 
+  height: 400px;
+  /* header의 content를 수평 정렬하고 싶을 때 */
+  float:left;
+  /* 그냥 border 설정을 안하면 테이블 테두리가 없다. */
+  /* border-collapse 라는 속성에서 collapse는 인접한 셀 간의 경계선을 합치는 역할 */
+  border-collapse: collapse;
+}
+
+.history_table th.price_th, th.change_th{
+  width:100px;
+  height: 30px;
+}
+
+.history_table td.price_td, td.change_td{
+  height: 20px;
+  border-bottom: 2px solid #182026;
+}
