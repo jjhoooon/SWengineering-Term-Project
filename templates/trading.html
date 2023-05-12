@@ -37,6 +37,13 @@
     따로 섹션 나눠서 해야될 듯!
 -->
   <body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <script>
+            alert('{{ messages[0] }}');
+        </script>
+        {% endif %}
+    {% endwith %}
     <!--
       화면의 반은 코인 마켓 section
       나머지 반은 판매 게시글 section

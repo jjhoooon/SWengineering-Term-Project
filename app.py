@@ -134,19 +134,36 @@ def trading(username):
 def market_trading(username):
     # def coin_trading() 함수로 로그인한 사용자의 coin 개수와 money 개수를 변경 
     # 그리고 render_template('trading.html')
+    
     market_trading=int(request.form.get('market_trading'))
+    
+    mk=market.find_one({})
     user = users.find_one({'username':username}) # 로그인한 사용자 찾기
+    
+    # 마켓 코인 < 구매할 코인 이면 오류 발생 시켜야 함
+    if int(mk['coin'])<market_trading:
+        flash("구매할 코인 개수가 마켓이 보유한 코인을 초과하였습니다")
+        return redirect(url_for('trading',username=username))
+    
+    # 구매 금액 > 잔액 이면 오류 발생 시켜야 함
+    if int(user['money'])<(market_trading*100):
+        flash("잔액이 부족합니다")
+        return redirect(url_for('trading',username=username))
+    
+    # 오류 발생이 없을 경우
+    
+    # 마켓 보유 코인 update 해줘야 함
+    # 원래 보유 코인 개수 - 구매한 코인 개수
+    updated_market_coin= int(mk['coin'])-market_trading # 마켓 보유 코인 update 
+    market.update_one({},{"$set":{'coin':updated_market_coin}})
+    
+    # 사용자의 coin과 money를 업데이트 해줘야 함
     # coin update => 현재 보유한 coin + 구매한 코인 개수
     # money update => 현재 보유한 money - (구매한 코인 개수 x 100) 
     # 마켓 코인은 100원이기 때문!
     updated_coin=int(user['coin'])+market_trading
     updated_money=int(user['money'])-(market_trading*100)
     users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
-    # 그리고 마켓 보유 코인도 update 해줘야 함
-    # 원래 보유 코인 개수 - 구매한 코인 개수
-    mk=market.find_one({})
-    updated_market_coin= int(mk['coin'])-market_trading # 마켓 보유 코인 update 
-    market.update_one({},{"$set":{'coin':updated_market_coin}})
     
     return render_template('trading.html',market_coin=updated_market_coin)
 
