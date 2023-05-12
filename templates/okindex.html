@@ -14,15 +14,15 @@
 <body>
     <!-- 사용자 정보가 없으면 로그인 실패, flash('Username과 Password를 다시 확인해주세요.')  -->
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <script>
-                alert('{{ messages[0] }}');
-            </script>
-        {% endif %}
+    {% if messages %}
+    <script>
+        alert('{{ messages[0] }}');
+    </script>
+    {% endif %}
     {% endwith %}
     <div id="home" class="big-bg">
         <header class="page-header wrapper">
-            <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
+            <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
             <nav>
                 <ul class="main-nav">
                     <li><a href="{{ url_for('overview') }}">Overview</a></li>
