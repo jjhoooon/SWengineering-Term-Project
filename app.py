@@ -13,7 +13,10 @@ mongo = PyMongo(app)
 
 # 사용자 정보를 담을 MongoDB 컬렉션
 users = mongo.db.users
-history = mongo.db.trade_history
+history = mongo.db.history
+market = mongo.db.market
+post = mongo.db.post
+
 
 @app.route('/logout')
 def logout():
