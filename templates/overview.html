@@ -48,6 +48,24 @@
   trading page 들어가는 버튼
   이 형식 !
 -->
+
+<!-- history DB
+이전 거래 money
+현재 거래 money
+순서
+
+=> 순서가 필요? 차트를 위해서?
+순서가 필요하다!!! 
+
+=> 순서와 현재 거래 money를 db에서 불러오는데 
+거래가 발생할 때마다 불러올 수 있도록 하자.
+그리고 그걸 차트에 적용
+
+=> (거래 개수가 2개 이상일 때) 
+거래가 발생할 때마다 이전 거래와 현재 거래 money를 비교해서 
+change에 적용
+-->
+
 <body>
   <header class="page-header">
     <h1 class="h1_logo"><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
