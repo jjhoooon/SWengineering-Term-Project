@@ -124,9 +124,11 @@ def overview():
 
 @app.route('/trading/<username>')
 def trading(username):
+    money_data=users.find_one({'username':username},{'money':1})
+    coin_data=users.find_one({'username':username},{'coin':1})
     mk=market.find_one({})
     market_coin=int(mk['coin'])
-    return render_template('trading.html',username=username,market_coin=market_coin)
+    return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=market_coin)
 
 @app.route('/market_trading/<username>', methods=['GET','POST'])
 def market_trading(username):
@@ -147,3 +149,4 @@ def market_trading(username):
     market.update_one({},{"$set":{'coin':updated_market_coin}})
     
     return render_template('trading.html',market_coin=updated_market_coin)
+
