@@ -1,84 +1,25 @@
 @charset "UTF-8";
 
-body{
-  font-family: "나눔고딕", NanumGothic, "맑은고딕", MalgunGothic, "Apple SD Gothic Neo", sans-serif;
-  line-height: 1.7;
-  color: #432;
-}
-
-img{
-  max-width: 100%;
-}
-
-.logo{
-  width: 210px;
-  margin-top: 14px;
-}
-
-.page-header{
-  display:flex;
-  justify-content:space-between;
-}
-
-.main-nav{
-  /* display: flex; 속성은 Flexbox 레이아웃을 생성하기 위해 사용.
-  Flexbox는 요소들을 가로 또는 세로 축을 기준으로 정렬하고 배치하는 기능을 제공
-  기본적으로는 가로 축을 기준으로 정렬*/
+.overviewWrapper{
+  width: 100%;
+  height: 600px;
   display: flex;
-  font-size: 1.25rem;
-  text-transform:uppercase;
-  list-style:none;
-  position: absolute;
-  top: 34px;
-  right: 200px;
-}
-
-.main-nav li{
-  margin-left:36px;
-}
-
-.main-nav a{
-  color:#432;
-}
-
-.main-nav a:hover{
-  color: #0bd;
-}
-
-.h1_logo{
-  position: absolute;
-  top: 10px;
-  left: 100px;
-}
-
-main{
-  /* 내용을 center로 두고 싶을 때 */
-  display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  position: relative;
-  top: 200px;
-}
-
-#price_chart{
-  width:800px;
-  height: 700px;
-  float:left;
 }
 
 .history{
-  width: 400px; 
+  width: 800px; 
   height: 400px;
   /* overflow : auto는 content가 범위를 벗어날 경우 스크롤 생성해준다 */
   overflow: auto;
   overflow-x: hidden;
-  margin-right: 80px;
-  margin-left: 200px;
 }
 
 .history_table{
   text-align:center; 
-  width: 350px; 
+  width: 100%; 
   height: 400px;
   /* header의 content를 수평 정렬하고 싶을 때 */
   float:left;
@@ -96,3 +37,67 @@ main{
   height: 20px;
   border-bottom: 2px solid #182026;
 }
+
+.priceChart{
+  width: 800px;
+  height: 400px;
+}
+
+
+
+/* history list 점차 보완예정 */
+
+.history {
+  margin: 20px auto;
+  max-width: 400px;
+  font-family: Arial, sans-serif;
+}
+
+.history_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.price_th,
+.change_th {
+  padding: 10px;
+  text-align: center;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  font-weight: bold;
+}
+
+.price_th {
+  color: #333;
+}
+
+.change_th {
+  color: #777;
+}
+
+.price_td,
+.change_td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.price_td {
+  color: #333;
+  font-weight: bold;
+}
+
+.change_td {
+  font-weight: bold;
+}
+
+.change_td.positive {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.change_td.negative {
+  background-color: #e53935;
+  color: #fff;
+}
+
