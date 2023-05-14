@@ -15,7 +15,7 @@
 
           var input=document.createElement('input');
           input.type = 'hidden';
-          input.name = 'market_trading';
+          input.name = 'market_trading'; // 구매할 코인 개수
           input.value = marketCoin; 
           // prompt에서 입력한 개수가 marketCoin으로 들어가고
           // 그게 input 값으로 들어가려면 input.value=marketCoin을 꼭 해줘야 함
@@ -26,19 +26,24 @@
           form.submit();
         }
       }
+      
+      function making_post(){
+        // prompt로 판매 코인 개수, 개당 코인 가격 기입하게 하기 (input 2개)
+        var userPost=prompt('판매하실 코인의 개수와 가격을 입력하세요');
+        if(userPost!=null){
+          var form=document.createElement('form');
+          form.method='POST';
+          form.action='/making_post/{{username}}'
+
+          var input=document.createElement('input');
+          
+        }
+      }
     </script>
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
     <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
     <link href="../static/css/trading.css" rel="stylesheet">
   </head>
-  <!--
-    1. 마켓플레이스에서 하는 거래 내용
-    ㄴ 그 전에 서버에 저장되어 있는 코인 마켓의 보유 코인을 보여줘야 함
-    2. 유저 간의 거래 내용
-    ㄴ 판매 게시물
-
-    따로 섹션 나눠서 해야될 듯!
--->
   <body>
     <!-- 이걸 해야 flash가 뜸 -->
     {% with messages = get_flashed_messages() %}
@@ -61,7 +66,7 @@
       ㄴ 그리고 판매 게시글 제목을 <a> 태그로 하고 클릭하면 게시글로 들어갈 수 있게 하자
       밑에 판매 게시글 작성 버튼
     -->
-    <header class="page-header">
+    <header>
       <h1 class="h1_logo"><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
       <nav>
         <ul class="main-nav">
@@ -69,24 +74,29 @@
         </ul>
       </nav>
     </header>
-    <main class="trading_main">
-      <div class="coin_market">
-        <h1>Coin Market</h1>
-        <h2>Market Coin : {{market_coin}}</h2>
-        <br><br>
-        <!-- 거래하기 버튼.
-        버튼 클릭하면 coin_trading 함수가 실행되고
-        그 함수에서 coin_trading url로 이동 (flask)
-        -->
-        <button class="market_buy" onclick="market_trading()">구매 하기</button>
-      </div>
+    <main>
+      <div class="trading_main_market">
+        <div class="market_trading">
+          <h1>Coin Market</h1><br>
+          <h2>Market Coin : {{market_coin}}</h2>
+          <br><br>
+          <button class="market_buy" onclick="market_trading()">구매 하기</button>
+        </div>
 
-      <div class="account_div">
-        <h2>Account money : {{money.money}}</h2>
-        <h2>Account coin : {{coin.coin}}</h2>
+        <div class="account_div">
+          <h2>Account money : {{money.money}}</h2>
+          <h2>Account coin : {{coin.coin}}</h2>
+        </div>
       </div>
-
-      <div class="sale_post">
+      <div class="trading_main_post">
+        <div class="user_trading"> <!-- 판매 게시글의 큰 틀 div -->
+          <!-- 여기에 if문으로 게시글이 있다면 밑의 sale_post div 실행하게끔 -->
+            <div class="sale_post"> <!-- 게시글 작성하면 여기로 다 올라감, 그리고 overflow 쓰자 -->
+              <!-- 게시글엔 판매 코인 개수, 개당 코인 가격 게시 -->
+            </div>
+            <!-- 여기에 구매(게시글) 버튼 -->
+        </div>
+        <button class="add_post" onclick="making_post()">게시글 작성</button>
       </div>
     </main>
   </body>
