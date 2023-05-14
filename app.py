@@ -15,8 +15,6 @@ mongo = PyMongo(app)
 users = mongo.db.users
 history = mongo.db.history
 market = mongo.db.market
-post = mongo.db.post
-
 
 @app.route('/logout')
 def logout():
@@ -112,11 +110,60 @@ def update_money(username):
     
     return render_template('account.html', money=money_data,coin=coin_data,username=username)
 if __name__ == '__main__':
-    app.run(debug=True) 
     
 
 #현재 에러 발생!! (2가지를 고려해봐야함)
 #1. account.html 에서 username과 input값을 flask에 제대로 전송했는지
 #2. flask, '/update_money'에서 mongodb의 money_field 업데이트 코드가 맞는지
 #추가적으로, 2번에서 html에서 받은 데이터 타입과 DB의 데이터 타입을 생각해봐야함!
+    app.run(debug=True) 
+
+@app.route('/overview/<username>')
+def overview(username):
+    return render_template('overview.html',username=username)
+
+@app.route('/trading/<username>')
+def trading(username):
+    money_data=users.find_one({'username':username},{'money':1})
+    coin_data=users.find_one({'username':username},{'coin':1})
+    mk=market.find_one({})
+    market_coin=int(mk['coin'])
+    return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin)
+
+@app.route('/market_trading/<username>', methods=['GET','POST'])
+def market_trading(username):
+    # def coin_trading() 함수로 로그인한 사용자의 coin 개수와 money 개수를 변경 
+    # 그리고 render_template('trading.html')
+    
+    market_trading=int(request.form.get('market_trading'))
+    
+    mk=market.find_one({}) # market 정보 불러오기
+    user = users.find_one({'username':username}) # 로그인한 사용자 찾기
+    
+    # 마켓 코인 < 구매할 코인 이면 오류 발생 시켜야 함
+    if int(mk['coin'])<market_trading:
+        flash("구매할 코인 개수가 마켓이 보유한 코인을 초과하였습니다")
+        return redirect(url_for('trading',username=username))
+    
+    # 구매 금액 > 잔액 이면 오류 발생 시켜야 함
+    if int(user['money'])<(market_trading*100):
+        flash("잔액이 부족합니다")
+        return redirect(url_for('trading',username=username))
+    
+    # 오류 발생이 없을 경우
+    
+    # 마켓 보유 코인 update 해줘야 함
+    # 원래 보유 코인 개수 - 구매한 코인 개수
+    updated_market_coin= int(mk['coin'])-market_trading # 마켓 보유 코인 update 
+    market.update_one({},{"$set":{'coin':updated_market_coin}})
+    
+    # 사용자의 coin과 money를 업데이트 해줘야 함
+    # coin update => 현재 보유한 coin + 구매한 코인 개수
+    # money update => 현재 보유한 money - (구매한 코인 개수 x 100) 
+    # 마켓 코인은 100원이기 때문!
+    updated_coin=int(user['coin'])+market_trading
+    updated_money=int(user['money'])-(market_trading*100)
+    users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
+    
+    return render_template('trading.html',market_coin=updated_market_coin)
 

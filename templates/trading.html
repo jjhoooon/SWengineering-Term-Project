@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading page</title>
+    <script>
+      function market_trading(){
+        var marketCoin=prompt('구매하실 코인 개수를 입력하세요');
+        if (marketCoin!==null){
+          var form=document.createElement('form');
+          form.method='POST';
+          form.action='/market_trading/{{username}}';
+
+          var input=document.createElement('input');
+          input.type = 'hidden';
+          input.name = 'market_trading';
+          input.value = marketCoin; 
+          // prompt에서 입력한 개수가 marketCoin으로 들어가고
+          // 그게 input 값으로 들어가려면 input.value=marketCoin을 꼭 해줘야 함
+
+          // 이 순서로 해야됨 (form에 input 넣고 그 form을 document에 넣기)
+          form.appendChild(input); // 폼에 input 엘리먼트 추가
+          document.body.appendChild(form); // 폼을 문서에 추가
+          form.submit();
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+    <link href="../static/css/index.css" rel="stylesheet">
+    <link href="../static/css/trading.css" rel="stylesheet">
+  </head>
+
+    <body>
+        <!-- 이걸 해야 flash가 뜸 -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <script>
+                alert('{{ messages[0] }}');
+            </script>
+            {% endif %}
+        {% endwith %}
+        <div id="home" class="big-bg">
+            <header class="page-header wrapper">
+                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
+                            alt="마켓 홈"></a></h1>
+                <nav>
+                    <ul class="main-nav">
+                      <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
+                        <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a>
+                    </ul>
+                </nav>
+            </header>
+            <div class="home-content wrapper">
+                <div class="tradingWrapper">
+                  <div class="leftWrapper">
+                  <div class="marketTrading_Wrapper">
+                    <div class="marKetTrading_Header">
+                      <h1>Coin Market</h1>
+                    </div>
+                    <div class="marketTrading_contents">
+                      <div class="marketCoin">
+                        <h2>Market Coin : {{market_coin}}</h2>
+                      </div>
+                      <button class="marketBuy" onclick="market_trading()">구매 하기</button>
+                    </div>
+                  </div>
+                  <div class="accountWrapper">
+                      <h2>Account money : {{money.money}}</h2>
+                      <h2>Account coin : {{coin.coin}}</h2>
+                  </div>
+                </div>
+
+                  <div class="rightWrapper">
+                    <div class="userTrading_Wrapper">
+                      <div>UserTrading_POST</div>
+                      <div class="sale_post">
+                      </div>
+                    </div>
+                  </div>
+          </div><!-- /.home-content-->
+        </div><!-- /#home -->
+    </body>
+
+</html>
