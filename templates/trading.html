@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="ko">
+
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,65 +30,58 @@
     </script>
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
     <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+    <link href="../static/css/index.css" rel="stylesheet">
     <link href="../static/css/trading.css" rel="stylesheet">
   </head>
-  <!--
-    1. 마켓플레이스에서 하는 거래 내용
-    ㄴ 그 전에 서버에 저장되어 있는 코인 마켓의 보유 코인을 보여줘야 함
-    2. 유저 간의 거래 내용
-    ㄴ 판매 게시물
 
-    따로 섹션 나눠서 해야될 듯!
--->
-  <body>
-    <!-- 이걸 해야 flash가 뜸 -->
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <script>
-            alert('{{ messages[0] }}');
-        </script>
-        {% endif %}
-    {% endwith %}
-    <!--
-      화면의 반은 코인 마켓 section
-      나머지 반은 판매 게시글 section
+    <body>
+        <!-- 이걸 해야 flash가 뜸 -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <script>
+                alert('{{ messages[0] }}');
+            </script>
+            {% endif %}
+        {% endwith %}
+        <div id="home" class="big-bg">
+            <header class="page-header wrapper">
+                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
+                            alt="마켓 홈"></a></h1>
+                <nav>
+                    <ul class="main-nav">
+                      <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
+                        <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a>
+                    </ul>
+                </nav>
+            </header>
+            <div class="home-content wrapper">
+                <div class="tradingWrapper">
+                  <div class="leftWrapper">
+                  <div class="marketTrading_Wrapper">
+                    <div class="marKetTrading_Header">
+                      <h1>Coin Market</h1>
+                    </div>
+                    <div class="marketTrading_contents">
+                      <div class="marketCoin">
+                        <h2>Market Coin : {{market_coin}}</h2>
+                      </div>
+                      <button class="marketBuy" onclick="market_trading()">구매 하기</button>
+                    </div>
+                  </div>
+                  <div class="accountWrapper">
+                      <h2>Account money : {{money.money}}</h2>
+                      <h2>Account coin : {{coin.coin}}</h2>
+                  </div>
+                </div>
 
-      코인 마켓 section에선
-      위에 코인 마켓의 보유 코인
-      밑에 구매하기 버튼
-
-      판매 게시글 section에선
-      위에 스크롤 되는 판매 게시글들 모음 (div로 하고 overflow 쓰자)
-      ㄴ 그리고 판매 게시글 제목을 <a> 태그로 하고 클릭하면 게시글로 들어갈 수 있게 하자
-      밑에 판매 게시글 작성 버튼
-    -->
-    <header class="page-header">
-      <h1 class="h1_logo"><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg" alt="마켓 홈"></a></h1>
-      <nav>
-        <ul class="main-nav">
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main class="trading_main">
-      <div class="coin_market">
-        <h1>Coin Market</h1>
-        <h2>Market Coin : {{market_coin}}</h2>
-        <br><br>
-        <!-- 거래하기 버튼.
-        버튼 클릭하면 coin_trading 함수가 실행되고
-        그 함수에서 coin_trading url로 이동 (flask)
-        -->
-        <button class="market_buy" onclick="market_trading()">구매 하기</button>
-      </div>
-
-      <div class="account_div">
-        <h2>Account money : {{money.money}}</h2>
-        <h2>Account coin : {{coin.coin}}</h2>
-      </div>
-
-      <div class="sale_post">
-      </div>
-    </main>
-  </body>
-</html>
+                  <div class="rightWrapper">
+                    <div class="userTrading_Wrapper">
+                      <div>UserTrading_POST</div>
+                      <div class="sale_post">
+                      </div>
+                    </div>
+                  </div>
+          </div><!-- /.home-content-->
+        </div><!-- /#home -->
+    </body>

@@ -1,5 +1,108 @@
 @charset "UTF-8";
 
+.overviewWrapper{
+  width: 100%;
+  height: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history{
+  width: 800px; 
+  height: 400px;
+  /* overflow : auto는 content가 범위를 벗어날 경우 스크롤 생성해준다 */
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.history_table{
+  text-align:center; 
+  width: 100%; 
+  height: 400px;
+  /* header의 content를 수평 정렬하고 싶을 때 */
+  float:left;
+  /* 그냥 border 설정을 안하면 테이블 테두리가 없다. */
+  /* border-collapse 라는 속성에서 collapse는 인접한 셀 간의 경계선을 합치는 역할 */
+  border-collapse: collapse;
+}
+
+.history_table th.price_th, th.change_th{
+  width:100px;
+  height: 30px;
+}
+
+.history_table td.price_td, td.change_td{
+  height: 20px;
+  border-bottom: 2px solid #182026;
+}
+
+.priceChart{
+  width: 800px;
+  height: 400px;
+}
+
+
+
+/* history list 점차 보완예정 */
+
+.history {
+  margin: 20px auto;
+  max-width: 400px;
+  font-family: Arial, sans-serif;
+}
+
+.history_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.price_th,
+.change_th {
+  padding: 10px;
+  text-align: center;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  font-weight: bold;
+}
+
+.price_th {
+  color: #333;
+}
+
+.change_th {
+  color: #777;
+}
+
+.price_td,
+.change_td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.price_td {
+  color: #333;
+  font-weight: bold;
+}
+
+.change_td {
+  font-weight: bold;
+}
+
+.change_td.positive {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.change_td.negative {
+  background-color: #e53935;
+  color: #fff;
+}
+
+@charset "UTF-8";
+
 body{
   font-family: "나눔고딕", NanumGothic, "맑은고딕", MalgunGothic, "Apple SD Gothic Neo", sans-serif;
   line-height: 1.7;

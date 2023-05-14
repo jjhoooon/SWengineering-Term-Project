@@ -1,0 +1,92 @@
+/* trading_main 클래스 스타일 */
+.tradingWrapper {
+  width: 100%;
+  height: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+
+.leftWrapper{
+  width: 45%;
+  height: 100%;
+  display: flex;  
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.marketTrading_Wrapper{
+  height: 50%;
+  display: flex;  
+  flex-direction: column;
+  justify-content: space-between;
+
+  border: 4mm ridge rgba(236, 239, 201, 0.6);
+  border-top: 4mm ridge rgba(211, 220, 50, .6);
+  border-radius: 20px;
+  background-color: rgb(247, 249, 241);
+}
+
+
+.marKetTrading_Header{
+  height: 40%;
+  margin-top: 30px;
+}
+
+.marketTrading_contents{
+  height : 60%;
+}
+
+.marketCoin{
+  margin-bottom: 30px;
+}
+
+.marketBuy{
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.marketBuy:hover {
+  background-color: #a1dba4;
+}
+
+.accountWrapper{
+  height: 40%;
+  display: flex;  
+  flex-direction: column;
+  justify-content: space-around;
+
+  border: 4mm ridge rgba(236, 239, 201, 0.6);
+  border-top: 4mm ridge rgba(211, 220, 50, .6);
+  border-radius: 20px;
+  background-color: rgb(247, 249, 241);
+}
+
+.rightWrapper{
+  
+  width: 45%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border: 4mm ridge rgba(236, 239, 201, 0.6);
+  border-top: 4mm ridge rgba(211, 220, 50, .6);
+  border-radius: 20px;
+  background-color: rgb(247, 249, 241);
+
+}
+
+/* chat gpt */
+
+
+
