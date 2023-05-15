@@ -43,12 +43,13 @@
     <body>
         <div id="home" class="big-bg">
             <header class="page-header wrapper">
-                <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
+                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
                             alt="마켓 홈"></a></h1>
                 <nav>
                     <ul class="main-nav">
-                      <li><a href="{{ url_for('login') }}">로그인해줘</a>
-                      <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+                      <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
+                        <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a>
                     </ul>
                 </nav>
             </header>
@@ -60,13 +61,22 @@
                         <th class="price_th">Last Price</th> <!-- flask나 mongodb에서 시간 계산하는거 있으면 그걸 통해서 가장 최근 거래 가격 표시 -->
                         <th class="change_th">Change</th> <!-- 여기서 trading 페이지에서 거래했던 가격을 통해 %로 + - 표시 -->
                       </tr>
-                      {% if history %}
-                      <!-- for를 넣어야 될텐데 for를 어떻게 설정하면 좋을까? -->
-                        <tr>
-                          <td class="price_td">{{lastprice}}</td>
-                          <td class="change_td">{{change}}</td>
-                        </tr>
-                      {% endif %}
+                      <tr>
+                        <td class="price_td"></td>
+                        <td class="change_td"></td>
+                      </tr>
+                      <tr>
+                        <td class="price_td"></td>
+                        <td class="change_td"></td>
+                      </tr>
+                      <tr>
+                        <td class="price_td"></td>
+                        <td class="change_td"></td>
+                      </tr>
+                      <tr>
+                        <td class="price_td"></td>
+                        <td class="change_td"></td>
+                      </tr>
                     </table>
                 </div>
                 <div class="priceChart" id="price_chart"></div> 

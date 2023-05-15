@@ -15,6 +15,7 @@ mongo = PyMongo(app)
 users = mongo.db.users
 history = mongo.db.history
 market = mongo.db.market
+post = mongo.db.post
 
 @app.route('/logout')
 def logout():
@@ -118,9 +119,21 @@ if __name__ == '__main__':
 #추가적으로, 2번에서 html에서 받은 데이터 타입과 DB의 데이터 타입을 생각해봐야함!
     app.run(debug=True) 
 
-@app.route('/overview/<username>')
-def overview(username):
-    return render_template('overview.html',username=username)
+@app.route('/overview')
+def overview():
+    # history db를 이용하자
+    # 테이블의 Last Price는 맨 처음엔 그냥 currentprice로 하자. 처음이니까 변화 없으니 change는 없다
+    # if (2번 째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김 그걸 또 Last Price에 넣자
+    # 그 두 개의 차이를 %로 환산해서 테이블의 change로 하자
+    history=history.find_one({})
+    rp=int(history['recentprice'])
+    cp=int(history['currentprice'])
+    change=(cp-rp)/rp*100
+    return render_template('overview.html', history=history, lastprice=cp, change=change)
+
+@app.route('/okoverview/<username>')
+def okoverview(username):
+    return render_template('okoverview.html',username=username)
 
 @app.route('/trading/<username>')
 def trading(username):
@@ -139,6 +152,7 @@ def market_trading(username):
     
     mk=market.find_one({}) # market 정보 불러오기
     user = users.find_one({'username':username}) # 로그인한 사용자 찾기
+    ht=history.find_one({}) # history 정보 불러오기
     
     # 마켓 코인 < 구매할 코인 이면 오류 발생 시켜야 함
     if int(mk['coin'])<market_trading:
@@ -165,5 +179,15 @@ def market_trading(username):
     updated_money=int(user['money'])-(market_trading*100)
     users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
     
+    # if문 써서 history의 order가 0일 때랑 (처음 거래)
+    # 0이 아닐 때 (이전 거래가 있었을 때) 따로 해서 recentprice 랑 currentprice 계산하자
+    # 근데 마켓 거래는 어차피 market_trading*100 이라...
+    if not history['order']: # order = 0일 때 즉, 처음 거래
+        history['order']+=1
+        history['currentprice']=market_trading*100
+    else:
+        history['order']+=1
+        history['recentprice']=history['currentprice'] # recentprice에 currentprice 넣기
+        history['currentprice']=market_trading*100
+    
     return render_template('trading.html',market_coin=updated_market_coin)
-
