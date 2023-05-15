@@ -61,22 +61,14 @@
                         <th class="price_th">Last Price</th> <!-- flask나 mongodb에서 시간 계산하는거 있으면 그걸 통해서 가장 최근 거래 가격 표시 -->
                         <th class="change_th">Change</th> <!-- 여기서 trading 페이지에서 거래했던 가격을 통해 %로 + - 표시 -->
                       </tr>
-                      <tr>
-                        <td class="price_td"></td>
-                        <td class="change_td"></td>
-                      </tr>
-                      <tr>
-                        <td class="price_td"></td>
-                        <td class="change_td"></td>
-                      </tr>
-                      <tr>
-                        <td class="price_td"></td>
-                        <td class="change_td"></td>
-                      </tr>
-                      <tr>
-                        <td class="price_td"></td>
-                        <td class="change_td"></td>
-                      </tr>
+                      {% if history %}
+                        {% for k,v in priceAndChange.items() %}
+                          <tr>
+                            <td class="price_td">{{k}}</td>
+                            <td class="change_td">{{v}}%</td>
+                          </tr>
+                        {% endfor %}
+                      {% endif %}
                     </table>
                 </div>
                 <div class="priceChart" id="price_chart"></div> 

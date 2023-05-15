@@ -123,17 +123,43 @@ if __name__ == '__main__':
 def overview():
     # history db를 이용하자
     # 테이블의 Last Price는 맨 처음엔 그냥 currentprice로 하자. 처음이니까 변화 없으니 change는 없다
-    # if (2번 째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김 그걸 또 Last Price에 넣자
+    # if (2번째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김 그걸 또 Last Price에 넣자
     # 그 두 개의 차이를 %로 환산해서 테이블의 change로 하자
-    history=history.find_one({})
-    rp=int(history['recentprice'])
-    cp=int(history['currentprice'])
-    change=(cp-rp)/rp*100
-    return render_template('overview.html', history=history, lastprice=cp, change=change)
+    ht=history.find({})
+    priceAndChange=dict()
+    for history_field in ht:
+        od=int(history_field['order'])
+        cp=int(history_field['currentprice'])
+        if od>=2: # 2번째 이상의 거래가 발생했다면
+            previous_od=od-1
+            previous_ht=history.find_one({'order':previous_od})
+            # 이전 order의 currentprice = 현재 order의 recentprice
+            rp=int(previous_ht['currentprice'])
+            # 변화량 계산 , 소수점 아래 2자리 수 까지
+            cg=round(float((cp-rp)/rp*100),2)
+            priceAndChange[cp]=cg
+        else: # 맨 처음 거래 change가 없음
+            priceAndChange[cp]=0
+    return render_template('overview.html', history=ht, priceAndChange=priceAndChange)
 
 @app.route('/okoverview/<username>')
 def okoverview(username):
-    return render_template('okoverview.html',username=username)
+    ht=history.find({})
+    priceAndChange=dict()
+    for history_field in ht:
+        od=int(history_field['order'])
+        cp=int(history_field['currentprice'])
+        if od>=2: # 2번째 이상의 거래가 발생했다면
+            previous_od=od-1
+            previous_ht=history.find_one({'order':previous_od})
+            # 이전 order의 currentprice = 현재 order의 recentprice
+            rp=int(previous_ht['currentprice'])
+            # 변화량 계산 , 소수점 아래 2자리 수 까지
+            cg=round(float((cp-rp)/rp*100),2)
+            priceAndChange[cp]=cg
+        else: # 맨 처음 거래 change가 없음
+            priceAndChange[cp]=0
+    return render_template('okoverview.html',username=username, history=ht, priceAndChange=priceAndChange)
 
 @app.route('/trading/<username>')
 def trading(username):
@@ -182,12 +208,12 @@ def market_trading(username):
     # if문 써서 history의 order가 0일 때랑 (처음 거래)
     # 0이 아닐 때 (이전 거래가 있었을 때) 따로 해서 recentprice 랑 currentprice 계산하자
     # 근데 마켓 거래는 어차피 market_trading*100 이라...
-    if not history['order']: # order = 0일 때 즉, 처음 거래
-        history['order']+=1
-        history['currentprice']=market_trading*100
+    if not ht['order']: # order = 0일 때 즉, 처음 거래
+        ht['order']+=1
+        ht['recentprice']=0
+        ht['currentprice']=market_trading*100
     else:
-        history['order']+=1
-        history['recentprice']=history['currentprice'] # recentprice에 currentprice 넣기
-        history['currentprice']=market_trading*100
+        ht['order']+=1
+        ht['currentprice']=market_trading*100
     
     return render_template('trading.html',market_coin=updated_market_coin)
