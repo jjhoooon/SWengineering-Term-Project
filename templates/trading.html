@@ -45,15 +45,21 @@
         {% endwith %}
         <div id="home" class="big-bg">
             <header class="page-header wrapper">
-                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
+                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images/mareketLogo.jpeg"
                             alt="마켓 홈"></a></h1>
                 <nav>
-                    <ul class="main-nav">
-                      <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
+                <ul class="main-nav">
+                    <div id="menu_tab"> 
+                        <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
+                    </div>
+                    <div id="menu_tab">
                         <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
+                    </div>
+                    <div id="menu_tab">
                         <li><a href="{{ url_for('logout') }}">Logout</a>
-                    </ul>
-                </nav>
+                    </div>
+                </ul>
+            </nav>
             </header>
             <div class="home-content wrapper">
                 <div class="tradingWrapper">
@@ -78,6 +84,9 @@
                   <div class="rightWrapper">
                     <div class="userTrading_Wrapper">
                       <div>UserTrading_POST</div>
+                      <div>
+                        <a href="{{ url_for('post',username=username) }}">Post</a>
+                      </div>
                       <div class="sale_post">
                       </div>
                     </div>

@@ -15,12 +15,18 @@
 <body>
     <div id="home" class="big-bg">
         <header class="page-header wrapper">
-            <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
+            <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images/mareketLogo.jpeg"
                         alt="WCB 마켓 홈"></a></h1>
             <nav>
                 <ul class="main-nav">
-                    <li><a href="{{ url_for('login') }}">로그인해줘</a>
+                    <div> 
+                    </div>
+                    <div id="menu_tab">
+                        <li><a href="{{ url_for('login') }}">Login</a>
+                    </div>
+                    <div id="menu_tab">
                     <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+                    </div>
                 </ul>
             </nav>
         </header>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Software Engineering Term Project">
+        <title>게시판 작성</title>
+
+        <!--CSS-->
+        <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
+        <link href="../static/css/index.css" rel="stylesheet">
+        <link href="../static/css/post.css" rel="stylesheet">
+        
+
+        <script>
+            //fuction 게시판 작성
+        </script>
+    </head>
+    <body>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <script>
+            alert('{{ messages[0] }}');
+        </script>
+        {% endif %}
+        {% endwith %}
+        <div id="home" class="big-bg">
+            <header class="page-header wrapper">
+                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images/mareketLogo.jpeg" alt="마켓 홈"></a></h1>
+                <nav>
+                    <ul class="main-nav">
+                        <div id="menu_tab"> 
+                            <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
+                        </div>
+                        <div id="menu_tab">
+                            <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
+                        </div>
+                        <div id="menu_tab">
+                            <li><a href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                    </ul>
+                </nav>
+            </header>
+            <div class="home-content wrapper">
+                <div class="post_wrapper" >
+                    <form action="{{url_for('post',username=username)}}" method="POST">
+                    <div class="post_content_wrapper">   
+                        <h1>Welcome Post!</h1>
+                        <h2>Username! : {{username}}</h2>
+                        <div class="inputWrapper">
+                            <p>코인 개수</p>
+                            <input type="number" class="postInput" name="coin_num" placeholder="판매할 코인 개수를 입력하시오."/>
+                        </div>
+                        <div class="inputWrapper">
+                            <p>코인 가격</p>
+                            <input type="number" class="postInput" name="coin_price" placeholder="코인 개수당 가격을 입력하시오."/>
+                        </div>
+                        <button id="deposit">게시하기</button>
+                    </div>
+                </form>
+                </div>
+            </div><!-- /.home-content-->
+        </div><!-- /#home -->
+    </body>
+
+</html>

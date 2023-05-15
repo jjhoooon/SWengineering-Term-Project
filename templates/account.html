@@ -33,18 +33,52 @@
                     form.submit();
                 }
             }
+
+            function withdrawMoney() {
+                var newMoney = prompt('출금하실 금액을 입력하세요!');
+                if (newMoney !== null) {
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/withdraw_money/{{username}}';
+
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'new_money';;
+                    input.value = newMoney;
+
+                    form.appendChild(input); // 폼에 input 엘리먼트 추가
+
+                    document.body.appendChild(form); // 폼을 문서에 추가
+
+                    form.submit();
+                }
+            }
+
+            
         </script>
     </head>
     <body>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <script>
+            alert('{{ messages[0] }}');
+        </script>
+        {% endif %}
+        {% endwith %}
         <div id="home" class="big-bg">
             <header class="page-header wrapper">
-                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
-                            alt="마켓 홈"></a></h1>
+                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images/mareketLogo.jpeg" alt="마켓 홈"></a></h1>
                 <nav>
                     <ul class="main-nav">
-                        <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
-                        <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
-                        <li><a href="{{ url_for('logout') }}">Logout</a>
+                        <div id="menu_tab"> 
+                            <li><a href="{{ url_for('trading',username=username) }}">Trading</a></li>
+                        </div>
+                        <div id="menu_tab">
+                            <li><a href="{{ url_for('account',username=username) }}">Account</a></li>
+                        </div>
+                        <div id="menu_tab">
+                            <li><a href="{{ url_for('logout') }}">Logout</a>
+                        </div>
                     </ul>
                 </nav>
             </header>
@@ -54,7 +88,8 @@
                     <h2>Username! : {{username}}</h2>
                     <p>Your money : {{money.money}}</p>
                     <p>Your coin : {{coin.coin}}</p>
-                    <button onclick="updateMoney()">입금하기!!</button>
+                    <button id="deposit" onclick="updateMoney()">입금하기!!</button>
+                    <button id="withdraw"onclick="withdrawMoney()">출금하기!!</button>
                 </div>
             </div><!-- /.home-content-->
         </div><!-- /#home -->

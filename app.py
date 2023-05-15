@@ -35,6 +35,7 @@ def okindex(username):
 def login():
     return render_template('login.html')
 
+
 @app.route('/login', methods=['POST'])
 def login_post():
     username = request.form['username']
@@ -55,6 +56,30 @@ def login_post():
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
+
+@app.route('/post')
+def post():
+    return render_template('post.html')
+
+@app.route('/post/<username>', methods=['GET','POST'])
+def post_up(username):
+    coin_num = request.form['coin_num']
+    coin_price = request.form['coin_price']
+    
+    #현재 사용자 정보 
+    # user = users.find_one({'username': username})
+    
+    postup = {
+        'seller_username': username,
+        'coin_num': coin_num,
+        'coin_price': coin_price,
+        'consumer_username' : "",
+    }
+    
+    post.insert_one(postup)
+    
+    return redirect(url_for('okindex',username=username))
+    
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
@@ -110,6 +135,37 @@ def update_money(username):
     coin_data=users.find_one({"username":username},{"coin":1}) # username이 맞는 계정 불러오기
     
     return render_template('account.html', money=money_data,coin=coin_data,username=username)
+
+    #출금 시, 잔액 업데이트
+
+@app.route('/withdraw_money/<username>', methods=['GET','POST'])
+def withdraw_money(username):
+    
+    new_money = int(request.form.get('new_money'))
+    
+    money_data=users.find_one({"username":username},{"money":1})
+    coin_data=users.find_one({"username":username},{"coin":1})
+    
+    user = users.find_one({'username':username})
+    current_money = int(user['money'])
+    
+    #새로운 money 값 계산
+    updated_money = current_money - new_money
+    
+    if updated_money < 0:
+        flash("출금하기 위한 잔액이 부족합니다.")
+        return render_template('account.html',username=username,money=money_data,coin=coin_data)     
+    
+    #money 업데이트
+    users.update_one({'username':username},{"$set":{"money": updated_money}})
+    
+    money_data=users.find_one({"username":username},{"money":1})
+    coin_data=users.find_one({"username":username},{"coin":1})
+    
+    return render_template('account.html', money=money_data,coin=coin_data,username=username)    
+
+    
+
 if __name__ == '__main__':
     
 
@@ -169,6 +225,7 @@ def trading(username):
     market_coin=int(mk['coin'])
     return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin)
 
+
 @app.route('/market_trading/<username>', methods=['GET','POST'])
 def market_trading(username):
     # def coin_trading() 함수로 로그인한 사용자의 coin 개수와 money 개수를 변경 
@@ -205,15 +262,20 @@ def market_trading(username):
     updated_money=int(user['money'])-(market_trading*100)
     users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
     
-    # if문 써서 history의 order가 0일 때랑 (처음 거래)
-    # 0이 아닐 때 (이전 거래가 있었을 때) 따로 해서 recentprice 랑 currentprice 계산하자
-    # 근데 마켓 거래는 어차피 market_trading*100 이라...
-    if not ht['order']: # order = 0일 때 즉, 처음 거래
-        ht['order']+=1
-        ht['recentprice']=0
-        ht['currentprice']=market_trading*100
-    else:
-        ht['order']+=1
-        ht['currentprice']=market_trading*100
+    money_data=users.find_one({"username":username},{"money":1})
+    coin_data=users.find_one({"username":username},{"coin":1})
     
-    return render_template('trading.html',market_coin=updated_market_coin)
+    return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=updated_market_coin)
+
+    # # if문 써서 history의 order가 0일 때랑 (처음 거래)
+    # # 0이 아닐 때 (이전 거래가 있었을 때) 따로 해서 recentprice 랑 currentprice 계산하자
+    # # 근데 마켓 거래는 어차피 market_trading*100 이라...
+    # if not ht['order']: # order = 0일 때 즉, 처음 거래
+    #     ht['order']+=1
+    #     ht['recentprice']=0
+    #     ht['currentprice']=market_trading*100
+    # else:
+    #     ht['order']+=1
+    #     ht['currentprice']=market_trading*100
+    
+    # return render_template('trading.html',market_coin=updated_market_coin)

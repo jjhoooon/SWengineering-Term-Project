@@ -2,7 +2,6 @@
 *{
     margin: 0;
     padding: 0;
-    font-family: 'poppins',sans-serif;
 }
 section{
     display: flex;
@@ -20,6 +19,7 @@ section{
     position: relative;
     width: 500px;
     height: 450px;
+    margin-bottom: 200px;
     border: 2px solid black;
     border-radius: 20px;
     display: flex;
