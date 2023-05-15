@@ -196,5 +196,8 @@ def market_trading(username):
     updated_money=int(user['money'])-(market_trading*100)
     users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
     
-    return render_template('trading.html',market_coin=updated_market_coin)
+    money_data=users.find_one({"username":username},{"money":1})
+    coin_data=users.find_one({"username":username},{"coin":1})
+    
+    return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=updated_market_coin)
 
