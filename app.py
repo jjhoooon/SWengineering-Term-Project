@@ -109,6 +109,37 @@ def update_money(username):
     coin_data=users.find_one({"username":username},{"coin":1}) # username이 맞는 계정 불러오기
     
     return render_template('account.html', money=money_data,coin=coin_data,username=username)
+
+    #출금 시, 잔액 업데이트
+
+@app.route('/withdraw_money/<username>', methods=['GET','POST'])
+def withdraw_money(username):
+    
+    new_money = int(request.form.get('new_money'))
+    
+    money_data=users.find_one({"username":username},{"money":1})
+    coin_data=users.find_one({"username":username},{"coin":1})
+    
+    user = users.find_one({'username':username})
+    current_money = int(user['money'])
+    
+    #새로운 money 값 계산
+    updated_money = current_money - new_money
+    
+    if updated_money < 0:
+        flash("출금하기 위한 잔액이 부족합니다.")
+        return render_template('account.html',username=username,money=money_data,coin=coin_data)     
+    
+    #money 업데이트
+    users.update_one({'username':username},{"$set":{"money": updated_money}})
+    
+    money_data=users.find_one({"username":username},{"money":1})
+    coin_data=users.find_one({"username":username},{"coin":1})
+    
+    return render_template('account.html', money=money_data,coin=coin_data,username=username)    
+
+    
+
 if __name__ == '__main__':
     
 

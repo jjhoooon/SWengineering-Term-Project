@@ -21,7 +21,7 @@ p {
     margin-bottom: 5px;
 }
 
-button {
+#deposit {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -34,6 +34,23 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+#withdraw {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#deposit:hover {
     background-color: #45a049;
+}
+
+#withdraw:hover {
+    background-color: rgba(223, 2, 2, 0.718);
 }
