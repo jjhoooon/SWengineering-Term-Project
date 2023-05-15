@@ -15,6 +15,7 @@ mongo = PyMongo(app)
 users = mongo.db.users
 history = mongo.db.history
 market = mongo.db.market
+post = mongo.db.post
 
 @app.route('/logout')
 def logout():
@@ -33,6 +34,7 @@ def okindex(username):
 @app.route('/login')
 def login():
     return render_template('login.html')
+
 
 @app.route('/login', methods=['POST'])
 def login_post():
@@ -54,6 +56,30 @@ def login_post():
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
+
+@app.route('/post')
+def post():
+    return render_template('post.html')
+
+@app.route('/post/<username>', methods=['GET','POST'])
+def post_up(username):
+    coin_num = request.form['coin_num']
+    coin_price = request.form['coin_price']
+    
+    #현재 사용자 정보 
+    # user = users.find_one({'username': username})
+    
+    postup = {
+        'seller_username': username,
+        'coin_num': coin_num,
+        'coin_price': coin_price,
+        'consumer_username' : "",
+    }
+    
+    post.insert_one(postup)
+    
+    return redirect(url_for('okindex',username=username))
+    
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
@@ -161,6 +187,7 @@ def trading(username):
     market_coin=int(mk['coin'])
     return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin)
 
+
 @app.route('/market_trading/<username>', methods=['GET','POST'])
 def market_trading(username):
     # def coin_trading() 함수로 로그인한 사용자의 coin 개수와 money 개수를 변경 
@@ -201,6 +228,3 @@ def market_trading(username):
     
     return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=updated_market_coin)
 
-@app.route('/post/<username>')
-def post(username):
-    return render_template('post.html',username=username)

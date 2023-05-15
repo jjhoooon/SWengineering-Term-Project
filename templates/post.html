@@ -45,19 +45,21 @@
             </header>
             <div class="home-content wrapper">
                 <div class="post_wrapper" >
+                    <form action="{{url_for('post',username=username)}}" method="POST">
                     <div class="post_content_wrapper">   
                         <h1>Welcome Post!</h1>
                         <h2>Username! : {{username}}</h2>
                         <div class="inputWrapper">
                             <p>코인 개수</p>
-                            <input type="text" class="postInput" name="post_coin_num" placeholder="판매할 코인 개수를 입력하시오."/>
+                            <input type="number" class="postInput" name="coin_num" placeholder="판매할 코인 개수를 입력하시오."/>
                         </div>
                         <div class="inputWrapper">
                             <p>코인 가격</p>
-                            <input type="text" class="postInput" name="post_coin_price" placeholder="코인 개수당 가격을 입력하시오."/>
+                            <input type="number" class="postInput" name="coin_price" placeholder="코인 개수당 가격을 입력하시오."/>
                         </div>
-                        <button id="deposit" onclick="updateMoney()">게시하기</button>
+                        <button id="deposit">게시하기</button>
                     </div>
+                </form>
                 </div>
             </div><!-- /.home-content-->
         </div><!-- /#home -->
