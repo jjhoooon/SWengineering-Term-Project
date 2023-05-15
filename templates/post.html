@@ -12,7 +12,7 @@
         <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
         <link href="../static/css/index.css" rel="stylesheet">
         <link href="../static/css/post.css" rel="stylesheet">
-        <link href="../static/css/account.css" rel="stylesheet">
+        
 
         <script>
             //fuction 게시판 작성
@@ -44,13 +44,20 @@
                 </nav>
             </header>
             <div class="home-content wrapper">
-                <div class="account_wrapper">
-                    <h1>Welcome Post!</h1>
-                    <h2>Username! : {{username}}</h2>
-                    <p>Your money : {{money.money}}</p>
-                    <p>Your coin : {{coin.coin}}</p>
-                    <button id="deposit" onclick="updateMoney()">입금하기!!</button>
-                    <button id="withdraw"onclick="withdrawMoney()">출금하기!!</button>
+                <div class="post_wrapper" >
+                    <div class="post_content_wrapper">   
+                        <h1>Welcome Post!</h1>
+                        <h2>Username! : {{username}}</h2>
+                        <div class="inputWrapper">
+                            <p>코인 개수</p>
+                            <input type="text" class="postInput" name="post_coin_num" placeholder="판매할 코인 개수를 입력하시오."/>
+                        </div>
+                        <div class="inputWrapper">
+                            <p>코인 가격</p>
+                            <input type="text" class="postInput" name="post_coin_price" placeholder="코인 개수당 가격을 입력하시오."/>
+                        </div>
+                        <button id="deposit" onclick="updateMoney()">게시하기</button>
+                    </div>
                 </div>
             </div><!-- /.home-content-->
         </div><!-- /#home -->

@@ -201,3 +201,6 @@ def market_trading(username):
     
     return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=updated_market_coin)
 
+@app.route('/post/<username>')
+def post(username):
+    return render_template('post.html',username=username)
