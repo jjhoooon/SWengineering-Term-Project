@@ -286,10 +286,15 @@ def purchase(username,post_order):
     # 판매 게시글의 seller_username과 같은 username을 가진 user를 가져와야 한다
     consumer=users.find_one({'username':username}) # 여기선 구매자
     
-    seller_updated_money=seller['money']+ps['coin_num']*ps['coin_price'] # 판매자의 money를 게시글 수익만큼 증가
+    # 만약 구매자의 money가 coin_num*coin_price보다 작으면 오류
+    if int(consumer['money'])<int(ps['coin_num'])*int(ps['coin_price']):
+        flash("잔액이 부족합니다!")
+        return redirect(url_for('trading',username=username))
     
-    consumer_updated_money=consumer['money']-ps['coin_num']*ps['coin_price'] # 구매자의 money를 게시글 수익만큼 감소
-    consumer_updated_coin=consumer['coin']+ps['coin_num'] # 구매자의 coin을 게시글의 coin 만큼 증가
+    seller_updated_money=int(seller['money'])+int(ps['coin_num'])*int(ps['coin_price']) # 판매자의 money를 게시글 수익만큼 증가
+    
+    consumer_updated_money=int(consumer['money'])-int(ps['coin_num'])*int(ps['coin_price']) # 구매자의 money를 게시글 수익만큼 감소
+    consumer_updated_coin=int(consumer['coin'])+int(ps['coin_num']) # 구매자의 coin을 게시글의 coin 만큼 증가
     
     # 판매자 users update
     users.update_one({'username':ps['seller_username']},{"$set":{'money':seller_updated_money}})
