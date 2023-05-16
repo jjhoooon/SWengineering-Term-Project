@@ -80,14 +80,16 @@
                       <h2>Account coin : {{coin.coin}}</h2>
                   </div>
                 </div>
-
                   <div class="rightWrapper">
                     <div class="userTrading_Wrapper">
-                      <div>UserTrading_POST</div>
                       <div>
-                        <a href="{{ url_for('post',username=username) }}">Post</a>
+                        <!-- for문으로 판매 게시글 리스트 테이블로 만들기 -->
+                        {% if post_list %} <!-- 만약 post가 있다면 -->
+                          {{post_list}}
+                        {% endif %}
                       </div>
-                      <div class="sale_post">
+                      <div>
+                        <a href="{{ url_for('posting',username=username) }}">Post</a>
                       </div>
                     </div>
                   </div>

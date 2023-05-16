@@ -14,64 +14,30 @@
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script>
-                    // MongoDB 드라이버를 사용하여 데이터베이스에 연결
-          const { MongoClient } = require('mongodb');
-          const url = 'mongodb+srv://peng2412:!jhy05744715@cluster0.qsv8zhv.mongodb.net/test'; // MongoDB 서버 주소
-          const dbName = 'test'; // 데이터베이스 이름
-          const collectionName = 'history'; // 컬렉션 이름
-
-          // MongoDB에서 데이터 가져오기
-          MongoClient.connect(url, (err, client) => {
-            if (err) throw err;
-            console.log('Connected to MongoDB server');
-
-            const db = client.db(dbName);
-            const collection = db.collection(collectionName);
-
-            collection.find({}).toArray((err, data) => {
-              if (err) throw err;
-              // 데이터를 가공하여 dataFromMongoDB에 할당
-              const dataFromMongoDB = data.map(item => ({ order: item.order, price: item.currentprice }));
-
-              // 이후 Google Charts를 사용하여 데이터를 표현하는 코드 작성
-              // Google Charts 로드
-              google.charts.load('current', {'packages':['corechart']});
-
-              // Google Charts 로드 후 실행할 함수 정의
-              google.charts.setOnLoadCallback(drawChart);
-
-              // 차트를 그리는 함수
-              function drawChart() {
-                // MongoDB에서 데이터 가져오기
-                const xhr = new XMLHttpRequest();
-                xhr.open('GET', '/api/dataFromMongoDB', true);
-                xhr.onload = function() {
-                  // 데이터 가공
-                  const data = JSON.parse(xhr.responseText);
-                  const chartData = [['Date', 'Value']];
-                  for (let i = 0; i < data.length; i++) {
-                    chartData.push([new Date(data[i].date), data[i].value]);
-                  }
-
-                  // Google Chart 데이터 형식으로 변환
-                  const chartDataTable = google.visualization.arrayToDataTable(chartData);
-
-                  // Line Chart 옵션 설정
-                  const options = {
-                    title: 'My Chart',
-                    curveType: 'function',
-                    legend: 'none' // 범례 숨기기
-                  };
-
-                  // Line Chart 그리기
-                  const chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-                  chart.draw(chartDataTable, options);
-                };
-                xhr.send();
-              }
-            });
-          });
-        </script>
+          // 스크립트 내에서 전달된 컬렉션 사용
+          var history = '{{ history }}';
+        
+          google.charts.load('current', {'packages':['corechart']});
+          google.charts.setOnLoadCallback(drawChart);
+        
+          function drawChart() {
+            // 컬렉션을 기반으로 데이터 배열 생성
+            var data = google.visualization.arrayToDataTable(history);
+        
+            // 차트 옵션 설정
+            var options = {
+              title: 'My Chart',
+              curveType: 'function',
+              legend: 'none'
+            };
+        
+            // 차트 인스턴스 생성
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        
+            // 차트 그리기
+            chart.draw(data, options);
+          }
+        </script>        
     </head>
     <body>
         <div id="home" class="big-bg">

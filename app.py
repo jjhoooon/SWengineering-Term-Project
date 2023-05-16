@@ -57,29 +57,9 @@ def login_post():
 def signup():
     return render_template('signup.html')
 
-@app.route('/post')
-def post():
-    return render_template('post.html')
-
-@app.route('/post/<username>', methods=['GET','POST'])
-def post_up(username):
-    coin_num = request.form['coin_num']
-    coin_price = request.form['coin_price']
-    
-    #현재 사용자 정보 
-    # user = users.find_one({'username': username})
-    
-    postup = {
-        'seller_username': username,
-        'coin_num': coin_num,
-        'coin_price': coin_price,
-        'consumer_username' : "",
-    }
-    
-    post.insert_one(postup)
-    
-    return redirect(url_for('okindex',username=username))
-    
+# signup이 url 패턴이 같은데도 괜찮은 이유
+# => Flask에서는 동일한 URL 패턴을 사용하여 GET과 POST 요청을 구분하여 
+#    처리할 수 있기 때문    
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
@@ -164,8 +144,6 @@ def withdraw_money(username):
     
     return render_template('account.html', money=money_data,coin=coin_data,username=username)    
 
-    
-
 if __name__ == '__main__':
     
 
@@ -223,7 +201,9 @@ def trading(username):
     coin_data=users.find_one({'username':username},{'coin':1})
     mk=market.find_one({})
     market_coin=int(mk['coin'])
-    return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin)
+    post_list=post.find({})
+    
+    return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin, post_list=post_list)
 
 
 @app.route('/market_trading/<username>', methods=['GET','POST'])
@@ -249,6 +229,10 @@ def market_trading(username):
     
     # 오류 발생이 없을 경우
     
+    # history collection update
+    ht['order']+=1
+    ht['currentprice']=market_trading*100
+    
     # 마켓 보유 코인 update 해줘야 함
     # 원래 보유 코인 개수 - 구매한 코인 개수
     updated_market_coin= int(mk['coin'])-market_trading # 마켓 보유 코인 update 
@@ -267,15 +251,27 @@ def market_trading(username):
     
     return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=updated_market_coin)
 
-    # # if문 써서 history의 order가 0일 때랑 (처음 거래)
-    # # 0이 아닐 때 (이전 거래가 있었을 때) 따로 해서 recentprice 랑 currentprice 계산하자
-    # # 근데 마켓 거래는 어차피 market_trading*100 이라...
-    # if not ht['order']: # order = 0일 때 즉, 처음 거래
-    #     ht['order']+=1
-    #     ht['recentprice']=0
-    #     ht['currentprice']=market_trading*100
-    # else:
-    #     ht['order']+=1
-    #     ht['currentprice']=market_trading*100
+
+# url_for와 함수 이름 일치 시키자
+@app.route('/posting/<username>')
+def posting(username):
+    return render_template('post.html',username=username)
+
+@app.route('/post_up/<username>', methods=['POST'])
+def post_up(username):
+    coin_num = request.form['coin_num']
+    coin_price = request.form['coin_price']
     
-    # return render_template('trading.html',market_coin=updated_market_coin)
+    #현재 사용자 정보 
+    user = users.find_one({'username': username})
+    
+    postup = {
+        'seller_username': user['username'],
+        'coin_num': coin_num,
+        'coin_price': coin_price,
+        'consumer_username' : "",
+    }
+    
+    post.insert_one(postup)
+    
+    return redirect(url_for('okindex',username=username))
