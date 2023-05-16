@@ -171,9 +171,9 @@ def overview():
             rp=int(previous_ht['currentprice'])
             # 변화량 계산 , 소수점 아래 2자리 수 까지
             cg=round(float((cp-rp)/rp*100),2)
-            priceAndChange[cp]=cg
+            priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
         else: # 맨 처음 거래 change가 없음
-            priceAndChange[cp]=0
+            priceAndChange[od]=[cp,0]
     return render_template('overview.html', history=ht, priceAndChange=priceAndChange)
 
 @app.route('/okoverview/<username>')
@@ -190,9 +190,9 @@ def okoverview(username):
             rp=int(previous_ht['currentprice'])
             # 변화량 계산 , 소수점 아래 2자리 수 까지
             cg=round(float((cp-rp)/rp*100),2)
-            priceAndChange[cp]=cg
+            priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
         else: # 맨 처음 거래 change가 없음
-            priceAndChange[cp]=0
+            priceAndChange[od]=[cp,0]
     return render_template('okoverview.html',username=username, history=ht, priceAndChange=priceAndChange)
 
 @app.route('/trading/<username>')
@@ -202,7 +202,7 @@ def trading(username):
     mk=market.find_one({})
     market_coin=int(mk['coin'])
     post_list=post.find({})
-    
+    coin_num=post.find
     return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin, post_list=post_list)
 
 

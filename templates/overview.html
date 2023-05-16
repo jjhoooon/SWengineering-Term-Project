@@ -60,10 +60,10 @@
                         <th class="change_th">Change</th> <!-- 여기서 trading 페이지에서 거래했던 가격을 통해 %로 + - 표시 -->
                       </tr>
                       {% if history %} <!-- 거래 내역이 있다면 -->
-                        {% for k,v in priceAndChange.items() %}
+                        {% for v in priceAndChange.values() %}
                           <tr>
-                            <td class="price_td">{{k}}</td>
-                            <td class="change_td">{{v}}%</td>
+                            <td class="price_td">{{v[0]}}</td>
+                            <td class="change_td">{{v[1]}}%</td>
                           </tr>
                         {% endfor %}
                       {% endif %}
