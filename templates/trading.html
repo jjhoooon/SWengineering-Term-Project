@@ -83,10 +83,23 @@
                   <div class="rightWrapper">
                     <div class="userTrading_Wrapper">
                       <div>
-                        <!-- for문으로 판매 게시글 리스트 테이블로 만들기 -->
-                        {% if post_list %} <!-- 만약 post가 있다면 -->
-                          {{post_list}}
-                        {% endif %}
+                        <table>
+                          <!-- for문으로 판매 게시글 리스트 테이블로 만들기 -->
+                          {% if ps %} <!-- 만약 post가 있다면 -->
+                          <!-- 
+                            판매 게시글에선 번호도 필요하니까 order를 key로 넣을 것이니
+                            key값도 사용해야 함
+                          -->
+                            {% for post_list in ps %}
+                              <tr>
+                                <th>{{post_list.order}}</th>
+                                <th>{{post_list.coin_num}}</th>
+                                <th>{{post_list.coin_price}}</th>
+                                <!-- <th><a></a></th> -->
+                              </tr>
+                            {% endfor %}
+                          {% endif %}
+                        </table>
                       </div>
                       <div>
                         <a href="{{ url_for('posting',username=username) }}">Post</a>

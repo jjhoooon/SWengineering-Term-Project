@@ -201,9 +201,8 @@ def trading(username):
     coin_data=users.find_one({'username':username},{'coin':1})
     mk=market.find_one({})
     market_coin=int(mk['coin'])
-    post_list=post.find({})
-    coin_num=post.find
-    return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin, post_list=post_list)
+    ps=post.find({})
+    return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin, ps=ps)
 
 
 @app.route('/market_trading/<username>', methods=['GET','POST'])
