@@ -273,4 +273,39 @@ def post_up(username):
     
     post.insert_one(postup)
     
+    # post 올릴 때 seller의 coin 개수가 post에 올린 coin 개수만큼 줄어듦
+    updated_coin=user['coin']-coin_num
+    users.update_one({'username':username},{"$set":{'coin':updated_coin}})
+    
+    return redirect(url_for('okindex',username=username))
+
+@app.route('/purchase/<username>/<post_order>')
+def purchase(username,post_order):
+    ps=post.find_one({'order':post_order}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
+    seller=users.find_one({'username':ps['seller_username']}) # 여기선 판매자, 
+    # 판매 게시글의 seller_username과 같은 username을 가진 user를 가져와야 한다
+    consumer=users.find_one({'username':username}) # 여기선 구매자
+    
+    seller_updated_money=seller['money']+ps['coin_num']*ps['coin_price'] # 판매자의 money를 게시글 수익만큼 증가
+    
+    consumer_updated_money=consumer['money']-ps['coin_num']*ps['coin_price'] # 구매자의 money를 게시글 수익만큼 감소
+    consumer_updated_coin=consumer['coin']+ps['coin_num'] # 구매자의 coin을 게시글의 coin 만큼 증가
+    
+    # 판매자 users update
+    users.update_one({'username':ps['seller_username']},{"$set":{'money':seller_updated_money}})
+    
+    # 구매자 users update
+    users.update_one({'username':username},{"$set":{'money':consumer_updated_money,'coin':consumer_updated_coin}})
+    
+    # 구매 완료 했으니 그 판매 게시글 없애기
+    post.delete_one({'order':post_order})
+    
+    return redirect(url_for('okindex',username=username))
+
+
+# 구매자 username == 판매자 username 이면 구매 버튼 대신 삭제 버튼 나타나게 해야 함
+# app.route 추가하자
+@app.route('/delete_post/<username>/<post_order>')
+def delete_post(username,post_order):
+    post.delete_one({'order':post_order}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
     return redirect(url_for('okindex',username=username))
