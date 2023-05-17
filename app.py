@@ -305,7 +305,7 @@ def purchase(username,post_order):
     # 구매 완료 했으니 그 판매 게시글 없애기
     post.delete_one({'order':post_order})
     
-    return redirect(url_for('okindex',username=username))
+    return redirect(url_for('trading',username=username))
 
 
 # 구매자 username == 판매자 username 이면 구매 버튼 대신 삭제 버튼 나타나게 해야 함
@@ -313,4 +313,4 @@ def purchase(username,post_order):
 @app.route('/delete_post/<username>/<post_order>')
 def delete_post(username,post_order):
     post.delete_one({'order':post_order}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
-    return redirect(url_for('okindex',username=username))
+    return redirect(url_for('trading',username=username))

@@ -96,9 +96,9 @@
                                 <!-- 그리고 if문 써서 판매자 username과 구매자 username이 같을 때 삭제 버튼으로 나오게끔 하자 -->
                                 <!-- 구매일 때와 삭제일 때의 url_for를 다르게 하자 -->
                                 {% if username!=post_list.seller_username %}
-                                  <th><a href="{{url_for('purchase',username=username,post_order=post_list.order)}}">구매</a></th>
+                                  <th><button type="button" onclick="window.location.href='{{url_for('purchase',username=username,post_order=post_list.order)}}'">구매</button></th>
                                 {% else %}
-                                  <th><a href="{{url_for('delete_post',username=username,post_order=post_list.order)}}">삭제</a></th>
+                                  <th><button type="button" onclick="window.location.href='{{url_for('delete_post',username=username,post_order=post_list.order)}}'">삭제</button></th>
                                 {% endif %}
                               </tr>
                             {% endfor %}
