@@ -214,7 +214,6 @@ def market_trading(username):
     
     mk=market.find_one({}) # market 정보 불러오기
     user = users.find_one({'username':username}) # 로그인한 사용자 찾기
-    ht=history.find_one({}) # history 정보 불러오기
     
     # 마켓 코인 < 구매할 코인 이면 오류 발생 시켜야 함
     if int(mk['coin'])<market_trading:
@@ -228,9 +227,21 @@ def market_trading(username):
     
     # 오류 발생이 없을 경우
     
-    # history collection update
-    ht['order']+=1
-    ht['currentprice']=market_trading*100
+    # overview를 위한 history collection update
+    ht=list(history.find({}))
+    if len(ht)>0: # 만약 거래 내역이 있다면
+        # 새로운 거래 내역의 order = 이전 거래 내역 + 1. 
+        # 즉, 가장 최신(가장 큰) order + 1
+        od=int(max(ht, key=lambda x:x['order'])['order'])+1
+    else: # 만약 거래 내역이 없다면
+        od=1
+    
+    new_history={
+        'order' : od,
+        'currentprice' : market_trading*100
+    }
+    
+    history.insert_one(new_history)
     
     # 마켓 보유 코인 update 해줘야 함
     # 원래 보유 코인 개수 - 구매한 코인 개수
@@ -322,6 +333,22 @@ def purchase(username,post_order):
 
     # 구매 완료 했으니 그 판매 게시글 없애기
     post.delete_one({'order':int(post_order)})
+    
+    # overview를 위한 history collection update
+    ht=list(history.find({}))
+    if len(ht)>0: # 만약 거래 내역이 있다면
+        # 새로운 거래 내역의 order = 이전 거래 내역 + 1. 
+        # 즉, 가장 최신(가장 큰) order + 1
+        od=int(max(ht, key=lambda x:x['order'])['order'])+1
+    else: # 만약 거래 내역이 없다면
+        od=1
+    
+    new_history={
+        'order' : od,
+        'currentprice' : int(ps['coin_num'])*int(ps['coin_price'])
+    }
+    
+    history.insert_one(new_history)
     
     return redirect(url_for('trading',username=username))
 
