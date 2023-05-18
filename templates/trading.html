@@ -82,31 +82,37 @@
                 </div>
                   <div class="rightWrapper">
                     <div class="userTrading_Wrapper">
-                      <div>
-                        <table>
+                      <div class="post_Wrapper">
+                        <div class="post_header">
+                          <div>order</div>
+                          <div>num</div>
+                          <div>price</div>
+                          <div>button</div>
+                        </div>
+                        <div class="post_scroll" style="overflow-y:scroll">
                           <!-- for문으로 판매 게시글 리스트 테이블로 만들기 -->
                           {% if ps %} <!-- 만약 post가 있다면 -->
                             {% for post_list in ps %}
-                              <tr>
-                                <th>{{post_list.order}}</th>
-                                <th>{{post_list.coin_num}}</th>
-                                <th>{{post_list.coin_price}}</th>
-                                <!-- 여기엔 구매 관련  -->
-                                <!-- url_for 안에서 post_list.order 값을 쓰고 싶다면 중괄호를 쓰면 안된다 -->
-                                <!-- 그리고 if문 써서 판매자 username과 구매자 username이 같을 때 삭제 버튼으로 나오게끔 하자 -->
-                                <!-- 구매일 때와 삭제일 때의 url_for를 다르게 하자 -->
-                                {% if username!=post_list.seller_username %}
-                                  <th><a href="{{url_for('purchase',username=username,post_order=post_list.order)}}"><button type="button">구매</button></a></th>
-                                {% else %}
-                                  <th><a href="{{url_for('delete_post',username=username,post_order=post_list.order)}}"><button type="button">삭제</button></a></th>
-                                {% endif %}
-                              </tr>
+                            <div class="post_content">
+                              <div>{{post_list.order}}</div>
+                              <div>{{post_list.coin_num}}</div>
+                              <div>{{post_list.coin_price}}</div>
+                              {% if username!=post_list.seller_username %}
+                                <div class="post_purchase"><a href="{{url_for('purchase',username=username,post_order=post_list.order)}}"><button type="button">구매</button></a></div>
+                              {% else %}
+                                <div class="post_delete"><a href="{{url_for('delete_post',username=username,post_order=post_list.order)}}"><button type="button">삭제</button></a></div>
+                              {% endif %}
+                              <!-- 여기엔 구매 관련  -->
+                              <!-- url_for 안에서 post_list.order 값을 쓰고 싶다면 중괄호를 쓰면 안된다 -->
+                              <!-- 그리고 if문 써서 판매자 username과 구매자 username이 같을 때 삭제 버튼으로 나오게끔 하자 -->
+                              <!-- 구매일 때와 삭제일 때의 url_for를 다르게 하자 -->
+                            </div>
                             {% endfor %}
                           {% endif %}
-                        </table>
-                      </div>
-                      <div>
-                        <a href="{{ url_for('posting',username=username) }}">Post</a>
+                          </div>
+                        </div>
+                      <div class="post_button_wrapper">
+                        <div class="post_button"><a href="{{ url_for('posting',username=username) }}">Post</a></div>
                       </div>
                     </div>
                   </div>
