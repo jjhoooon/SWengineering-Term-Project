@@ -261,27 +261,36 @@ def post_up(username):
     coin_num = request.form['coin_num']
     coin_price = request.form['coin_price']
     
-    #현재 사용자 정보 
+    # 현재 사용자 정보 
     user = users.find_one({'username': username})
     
+    # 현재 판매 게시글 현황
+    ps=list(post.find({}))
+    if len(ps)>0: # 만약 판매 게시글이 있다면
+        # 새로운 게시글의 order = 이전 판매 게시글 + 1. 
+        # 즉, 가장 최신(가장 큰) order + 1
+        od=int(max(ps, key=lambda x:x['order'])['order'])+1
+    else: # 만약 판매 게시글이 없다면
+        od=1
+
     postup = {
+        'order': od,
         'seller_username': user['username'],
         'coin_num': coin_num,
         'coin_price': coin_price,
-        'consumer_username' : "",
     }
     
     post.insert_one(postup)
     
     # post 올릴 때 seller의 coin 개수가 post에 올린 coin 개수만큼 줄어듦
-    updated_coin=user['coin']-coin_num
+    updated_coin=int(user['coin'])-int(coin_num)
     users.update_one({'username':username},{"$set":{'coin':updated_coin}})
     
     return redirect(url_for('okindex',username=username))
 
 @app.route('/purchase/<username>/<post_order>')
 def purchase(username,post_order):
-    ps=post.find_one({'order':post_order}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
+    ps=post.find_one({'order':int(post_order)}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
     seller=users.find_one({'username':ps['seller_username']}) # 여기선 판매자, 
     # 판매 게시글의 seller_username과 같은 username을 가진 user를 가져와야 한다
     consumer=users.find_one({'username':username}) # 여기선 구매자
@@ -302,15 +311,32 @@ def purchase(username,post_order):
     # 구매자 users update
     users.update_one({'username':username},{"$set":{'money':consumer_updated_money,'coin':consumer_updated_coin}})
     
+    # 구매한 post의 order보다 더 큰 order가 존재하면
+    # 그 order를 가진 게시글들의 order를 한 칸씩 앞으로 밀어줘야 함
+    # for문을 이용해 더 큰 order를 가진 게시글들을 찾기
+    big_ps=post.find({})
+    for big in big_ps:
+        if big['order']>int(post_order): # post document들의 'order'는 이미 int형
+            updated_big_order=big['order']-1
+            post.update_one({'order':big['order']},{"$set":{'order':updated_big_order}})
+
     # 구매 완료 했으니 그 판매 게시글 없애기
-    post.delete_one({'order':post_order})
+    post.delete_one({'order':int(post_order)})
     
     return redirect(url_for('trading',username=username))
 
 
 # 구매자 username == 판매자 username 이면 구매 버튼 대신 삭제 버튼 나타나게 해야 함
-# app.route 추가하자
 @app.route('/delete_post/<username>/<post_order>')
 def delete_post(username,post_order):
-    post.delete_one({'order':post_order}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
+    big_ps=post.find({})
+    # 삭제한 post의 order보다 더 큰 order가 존재하면
+    # 그 order를 가진 게시글들의 order를 한 칸씩 앞으로 밀어줘야 함
+    # for문을 이용해 더 큰 order를 가진 게시글들을 찾기
+    for big in big_ps:
+        if big['order']>int(post_order): # post document들의 'order'는 이미 int형
+            updated_big_order=big['order']-1
+            post.update_one({'order':big['order']},{"$set":{'order':updated_big_order}})
+
+    post.delete_one({'order':int(post_order)}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
     return redirect(url_for('trading',username=username))
