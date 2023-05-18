@@ -82,11 +82,12 @@
                 </div>
                   <div class="rightWrapper">
                     <div class="userTrading_Wrapper">
-                      <div>
+                        <div class="post_scroll" style="overflow:scroll">
                         <table>
                           <!-- for문으로 판매 게시글 리스트 테이블로 만들기 -->
                           {% if ps %} <!-- 만약 post가 있다면 -->
                             {% for post_list in ps %}
+                            <div class="post_content">
                               <tr>
                                 <th>{{post_list.order}}</th>
                                 <th>{{post_list.coin_num}}</th>
@@ -101,11 +102,12 @@
                                   <th><a href="{{url_for('delete_post',username=username,post_order=post_list.order)}}"><button type="button">삭제</button></a></th>
                                 {% endif %}
                               </tr>
+                            </div>
                             {% endfor %}
                           {% endif %}
                         </table>
                       </div>
-                      <div>
+                      <div class="post_button">
                         <a href="{{ url_for('posting',username=username) }}">Post</a>
                       </div>
                     </div>
