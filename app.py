@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, escape, jsonify
 from flask_pymongo import PyMongo
 from flask import flash
+import json
 
 app = Flask(__name__)
 
@@ -154,6 +155,7 @@ def overview():
     # if (2번째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김. 그 price를 Last Price에 넣기
     # 그 두 개의 차이를 %로 환산해서 테이블의 change로 함
     ht=history.find({})
+    ht_json=json.dumps(ht)
     priceAndChange=dict()
     for history_field in ht:
         od=int(history_field['order'])
@@ -168,7 +170,8 @@ def overview():
             priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
         else: # 맨 처음 거래 change가 없음
             priceAndChange[od]=[cp,0]
-    return render_template('overview.html', history=ht, priceAndChange=priceAndChange)
+    
+    return render_template('overview.html', ht=ht, ht_json=ht_json, priceAndChange=priceAndChange)
 
 @app.route('/okoverview/<username>')
 def okoverview(username):
@@ -276,7 +279,7 @@ def post_up(username):
         od=int(max(ps, key=lambda x:x['order'])['order'])+1
     else: # 만약 판매 게시글이 없다면
         od=1
-
+    
     postup = {
         'order': od,
         'seller_username': user['username'],
@@ -285,10 +288,6 @@ def post_up(username):
     }
     
     post.insert_one(postup)
-    
-    # post 올릴 때 seller의 coin 개수가 post에 올린 coin 개수만큼 줄어듦
-    updated_coin=int(user['coin'])-int(coin_num)
-    users.update_one({'username':username},{"$set":{'coin':updated_coin}})
     
     return redirect(url_for('okindex',username=username))
 
@@ -304,13 +303,16 @@ def purchase(username,post_order):
         flash("잔액이 부족합니다!")
         return redirect(url_for('trading',username=username))
     
+    # 오류 없이 정상적으로 구매가 이루어진 경우
+    
     seller_updated_money=int(seller['money'])+int(ps['coin_num'])*int(ps['coin_price']) # 판매자의 money를 게시글 수익만큼 증가
+    seller_updated_coin=int(seller['coin'])-int(ps['coin_num'])
     
     consumer_updated_money=int(consumer['money'])-int(ps['coin_num'])*int(ps['coin_price']) # 구매자의 money를 게시글 수익만큼 감소
     consumer_updated_coin=int(consumer['coin'])+int(ps['coin_num']) # 구매자의 coin을 게시글의 coin 만큼 증가
     
     # 판매자 users update
-    users.update_one({'username':ps['seller_username']},{"$set":{'money':seller_updated_money}})
+    users.update_one({'username':ps['seller_username']},{"$set":{'money':seller_updated_money,'coin':seller_updated_coin}})
     
     # 구매자 users update
     users.update_one({'username':username},{"$set":{'money':consumer_updated_money,'coin':consumer_updated_coin}})

@@ -14,35 +14,35 @@
 
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script>
-          // 스크립트 내에서 전달된 컬렉션 사용
-          var history = '{{ history }}';
-        
           google.charts.load('current', {'packages':['corechart']});
           google.charts.setOnLoadCallback(drawChart);
-        
+
           function drawChart() {
-            // 컬렉션을 기반으로 데이터 배열 생성
-            var data = google.visualization.arrayToDataTable(history);
-        
-            // 차트 옵션 설정
+            var data = google.visualization.arrayToDataTable([
+              ['time', 'price'],
+              ['11H',  1000],
+              ['12H',  1170],
+              ['13H',  660],
+              ['14H',  1030]
+              // 이 부분 더 늘리자
+            ]);
+
             var options = {
-              title: 'My Chart',
+              title: 'Coin Price Chart',
               curveType: 'function',
-              legend: 'none'
+              legend: 'none' // 범례 숨기기
             };
-        
-            // 차트 인스턴스 생성
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        
-            // 차트 그리기
+
+            var chart = new google.visualization.LineChart(document.getElementById('price_chart'));
+
             chart.draw(data, options);
           }
-        </script>        
+      </script>        
     </head>
     <body>
         <div id="home" class="big-bg">
             <header class="page-header wrapper">
-                <h1><a href="{{ url_for('okindex',username=username) }}"><img class="logo" src="../static/images/mareketLogo.jpeg"
+                <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images/mareketLogo.jpeg"
                             alt="마켓 홈"></a></h1>
                 <nav>
                     <ul class="main-nav">
@@ -59,7 +59,7 @@
                         <th class="price_th">Last Price</th> <!-- flask나 mongodb에서 시간 계산하는거 있으면 그걸 통해서 가장 최근 거래 가격 표시 -->
                         <th class="change_th">Change</th> <!-- 여기서 trading 페이지에서 거래했던 가격을 통해 %로 + - 표시 -->
                       </tr>
-                      {% if history %} <!-- 거래 내역이 있다면 -->
+                      {% if ht %} <!-- 거래 내역이 있다면 -->
                         {% for v in priceAndChange.values() %}
                           <tr>
                             <td class="price_td">{{v[0]}}</td>
@@ -69,7 +69,7 @@
                       {% endif %}
                     </table>
                 </div>
-                <div id="chart_div"></div>
+                <div id="price_chart"></div>
               </div>
           </div><!-- /.home-content-->
         </div><!-- /#home -->
