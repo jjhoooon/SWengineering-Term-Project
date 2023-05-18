@@ -85,7 +85,7 @@ def signup_post():
     return redirect(url_for('index'))
 
 
-    # user 계좌 정보 불러오기.
+    # user 계좌 정보 불러오기
 @app.route('/account/<username>',methods=['GET'])
 def account(username): # url로 부를 때 <username>을 받아오는 걸로 해보자!
         # 근데 이제 회원 정보에 맞는 money와 coin을 구해야함
@@ -145,20 +145,14 @@ def withdraw_money(username):
     return render_template('account.html', money=money_data,coin=coin_data,username=username)    
 
 if __name__ == '__main__':
-    
-
-#현재 에러 발생!! (2가지를 고려해봐야함)
-#1. account.html 에서 username과 input값을 flask에 제대로 전송했는지
-#2. flask, '/update_money'에서 mongodb의 money_field 업데이트 코드가 맞는지
-#추가적으로, 2번에서 html에서 받은 데이터 타입과 DB의 데이터 타입을 생각해봐야함!
     app.run(debug=True) 
 
 @app.route('/overview')
 def overview():
-    # history db를 이용하자
-    # 테이블의 Last Price는 맨 처음엔 그냥 currentprice로 하자. 처음이니까 변화 없으니 change는 없다
-    # if (2번째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김 그걸 또 Last Price에 넣자
-    # 그 두 개의 차이를 %로 환산해서 테이블의 change로 하자
+    # history db를 이용
+    # 테이블의 Last Price는 맨 처음에는 currentprice. 처음이니까 변화 없으니 change는 없음.
+    # if (2번째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김. 그 price를 Last Price에 넣기
+    # 그 두 개의 차이를 %로 환산해서 테이블의 change로 함
     ht=history.find({})
     priceAndChange=dict()
     for history_field in ht:
@@ -235,10 +229,10 @@ def market_trading(username):
         od=int(max(ht, key=lambda x:x['order'])['order'])+1
     else: # 만약 거래 내역이 없다면
         od=1
-    
+
     new_history={
         'order' : od,
-        'currentprice' : market_trading*100
+        'currentprice' : 100
     }
     
     history.insert_one(new_history)
@@ -251,7 +245,7 @@ def market_trading(username):
     # 사용자의 coin과 money를 업데이트 해줘야 함
     # coin update => 현재 보유한 coin + 구매한 코인 개수
     # money update => 현재 보유한 money - (구매한 코인 개수 x 100) 
-    # 마켓 코인은 100원이기 때문!
+    # 마켓 코인은 100원이기 때문
     updated_coin=int(user['coin'])+market_trading
     updated_money=int(user['money'])-(market_trading*100)
     users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
@@ -260,7 +254,6 @@ def market_trading(username):
     coin_data=users.find_one({"username":username},{"coin":1})
     
     return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=updated_market_coin)
-
 
 # url_for와 함수 이름 일치 시키자
 @app.route('/posting/<username>')
@@ -345,7 +338,7 @@ def purchase(username,post_order):
     
     new_history={
         'order' : od,
-        'currentprice' : int(ps['coin_num'])*int(ps['coin_price'])
+        'currentprice' : int(ps['coin_price'])
     }
     
     history.insert_one(new_history)
