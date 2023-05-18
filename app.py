@@ -190,7 +190,7 @@ def okoverview(username):
             priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
         else: # 맨 처음 거래 change가 없음
             priceAndChange[od]=[cp,0]
-    return render_template('okoverview.html',username=username, history=ht, priceAndChange=priceAndChange)
+    return render_template('okoverview.html',username=username, ht=ht, priceAndChange=priceAndChange)
 
 @app.route('/trading/<username>')
 def trading(username):
@@ -208,6 +208,11 @@ def market_trading(username):
     # 그리고 render_template('trading.html')
     
     market_trading=int(request.form.get('market_trading'))
+    
+    # coin 개수가 0 이하로 잘못 입력했다면 오류 발생
+    if market_trading<=0:
+        flash('잘못 입력하셨습니다! 다시 입력해주세요')
+        return redirect(url_for('trading',username=username))
     
     mk=market.find_one({}) # market 정보 불러오기
     user = users.find_one({'username':username}) # 로그인한 사용자 찾기
@@ -267,6 +272,11 @@ def posting(username):
 def post_up(username):
     coin_num = request.form['coin_num']
     coin_price = request.form['coin_price']
+    
+    # coin 개수와 가격이 0 이하로 잘못 입력했다면 오류 발생
+    if int(coin_num)<=0 or int(coin_price)<=0:
+        flash('잘못 입력하셨습니다! 다시 입력해주세요')
+        return render_template('post.html',username=username)
     
     # 현재 사용자 정보 
     user = users.find_one({'username': username})
