@@ -57,29 +57,9 @@ def login_post():
 def signup():
     return render_template('signup.html')
 
-@app.route('/post')
-def post():
-    return render_template('post.html')
-
-@app.route('/post/<username>', methods=['GET','POST'])
-def post_up(username):
-    coin_num = request.form['coin_num']
-    coin_price = request.form['coin_price']
-    
-    #현재 사용자 정보 
-    # user = users.find_one({'username': username})
-    
-    postup = {
-        'seller_username': username,
-        'coin_num': coin_num,
-        'coin_price': coin_price,
-        'consumer_username' : "",
-    }
-    
-    post.insert_one(postup)
-    
-    return redirect(url_for('okindex',username=username))
-    
+# signup이 url 패턴이 같은데도 괜찮은 이유
+# => Flask에서는 동일한 URL 패턴을 사용하여 GET과 POST 요청을 구분하여 
+#    처리할 수 있기 때문    
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
@@ -105,7 +85,7 @@ def signup_post():
     return redirect(url_for('index'))
 
 
-    # user 계좌 정보 불러오기.
+    # user 계좌 정보 불러오기
 @app.route('/account/<username>',methods=['GET'])
 def account(username): # url로 부를 때 <username>을 받아오는 걸로 해보자!
         # 근데 이제 회원 정보에 맞는 money와 coin을 구해야함
@@ -164,20 +144,50 @@ def withdraw_money(username):
     
     return render_template('account.html', money=money_data,coin=coin_data,username=username)    
 
-    
-
 if __name__ == '__main__':
-    
-
-#현재 에러 발생!! (2가지를 고려해봐야함)
-#1. account.html 에서 username과 input값을 flask에 제대로 전송했는지
-#2. flask, '/update_money'에서 mongodb의 money_field 업데이트 코드가 맞는지
-#추가적으로, 2번에서 html에서 받은 데이터 타입과 DB의 데이터 타입을 생각해봐야함!
     app.run(debug=True) 
 
-@app.route('/overview/<username>')
-def overview(username):
-    return render_template('overview.html',username=username)
+@app.route('/overview')
+def overview():
+    # history db를 이용
+    # 테이블의 Last Price는 맨 처음에는 currentprice. 처음이니까 변화 없으니 change는 없음.
+    # if (2번째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김. 그 price를 Last Price에 넣기
+    # 그 두 개의 차이를 %로 환산해서 테이블의 change로 함
+    ht=history.find({})
+    priceAndChange=dict()
+    for history_field in ht:
+        od=int(history_field['order'])
+        cp=int(history_field['currentprice'])
+        if od>=2: # 2번째 이상의 거래가 발생했다면
+            previous_od=od-1
+            previous_ht=history.find_one({'order':previous_od})
+            # 이전 order의 currentprice = 현재 order의 recentprice
+            rp=int(previous_ht['currentprice'])
+            # 변화량 계산 , 소수점 아래 2자리 수 까지
+            cg=round(float((cp-rp)/rp*100),2)
+            priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
+        else: # 맨 처음 거래 change가 없음
+            priceAndChange[od]=[cp,0]
+    return render_template('overview.html', history=ht, priceAndChange=priceAndChange)
+
+@app.route('/okoverview/<username>')
+def okoverview(username):
+    ht=history.find({})
+    priceAndChange=dict()
+    for history_field in ht:
+        od=int(history_field['order'])
+        cp=int(history_field['currentprice'])
+        if od>=2: # 2번째 이상의 거래가 발생했다면
+            previous_od=od-1
+            previous_ht=history.find_one({'order':previous_od})
+            # 이전 order의 currentprice = 현재 order의 recentprice
+            rp=int(previous_ht['currentprice'])
+            # 변화량 계산 , 소수점 아래 2자리 수 까지
+            cg=round(float((cp-rp)/rp*100),2)
+            priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
+        else: # 맨 처음 거래 change가 없음
+            priceAndChange[od]=[cp,0]
+    return render_template('okoverview.html',username=username, history=ht, priceAndChange=priceAndChange)
 
 @app.route('/trading/<username>')
 def trading(username):
@@ -185,7 +195,8 @@ def trading(username):
     coin_data=users.find_one({'username':username},{'coin':1})
     mk=market.find_one({})
     market_coin=int(mk['coin'])
-    return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin)
+    ps=post.find({})
+    return render_template('trading.html',username=username, money=money_data, coin=coin_data, market_coin=market_coin, ps=ps)
 
 
 @app.route('/market_trading/<username>', methods=['GET','POST'])
@@ -210,6 +221,22 @@ def market_trading(username):
     
     # 오류 발생이 없을 경우
     
+    # overview를 위한 history collection update
+    ht=list(history.find({}))
+    if len(ht)>0: # 만약 거래 내역이 있다면
+        # 새로운 거래 내역의 order = 이전 거래 내역 + 1. 
+        # 즉, 가장 최신(가장 큰) order + 1
+        od=int(max(ht, key=lambda x:x['order'])['order'])+1
+    else: # 만약 거래 내역이 없다면
+        od=1
+
+    new_history={
+        'order' : od,
+        'currentprice' : 100
+    }
+    
+    history.insert_one(new_history)
+    
     # 마켓 보유 코인 update 해줘야 함
     # 원래 보유 코인 개수 - 구매한 코인 개수
     updated_market_coin= int(mk['coin'])-market_trading # 마켓 보유 코인 update 
@@ -218,7 +245,7 @@ def market_trading(username):
     # 사용자의 coin과 money를 업데이트 해줘야 함
     # coin update => 현재 보유한 coin + 구매한 코인 개수
     # money update => 현재 보유한 money - (구매한 코인 개수 x 100) 
-    # 마켓 코인은 100원이기 때문!
+    # 마켓 코인은 100원이기 때문
     updated_coin=int(user['coin'])+market_trading
     updated_money=int(user['money'])-(market_trading*100)
     users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
@@ -228,3 +255,108 @@ def market_trading(username):
     
     return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=updated_market_coin)
 
+# url_for와 함수 이름 일치 시키자
+@app.route('/posting/<username>')
+def posting(username):
+    return render_template('post.html',username=username)
+
+@app.route('/post_up/<username>', methods=['POST'])
+def post_up(username):
+    coin_num = request.form['coin_num']
+    coin_price = request.form['coin_price']
+    
+    # 현재 사용자 정보 
+    user = users.find_one({'username': username})
+    
+    # 현재 판매 게시글 현황
+    ps=list(post.find({}))
+    if len(ps)>0: # 만약 판매 게시글이 있다면
+        # 새로운 게시글의 order = 이전 판매 게시글 + 1. 
+        # 즉, 가장 최신(가장 큰) order + 1
+        od=int(max(ps, key=lambda x:x['order'])['order'])+1
+    else: # 만약 판매 게시글이 없다면
+        od=1
+
+    postup = {
+        'order': od,
+        'seller_username': user['username'],
+        'coin_num': coin_num,
+        'coin_price': coin_price,
+    }
+    
+    post.insert_one(postup)
+    
+    # post 올릴 때 seller의 coin 개수가 post에 올린 coin 개수만큼 줄어듦
+    updated_coin=int(user['coin'])-int(coin_num)
+    users.update_one({'username':username},{"$set":{'coin':updated_coin}})
+    
+    return redirect(url_for('okindex',username=username))
+
+@app.route('/purchase/<username>/<post_order>')
+def purchase(username,post_order):
+    ps=post.find_one({'order':int(post_order)}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
+    seller=users.find_one({'username':ps['seller_username']}) # 여기선 판매자, 
+    # 판매 게시글의 seller_username과 같은 username을 가진 user를 가져와야 한다
+    consumer=users.find_one({'username':username}) # 여기선 구매자
+    
+    # 만약 구매자의 money가 coin_num*coin_price보다 작으면 오류
+    if int(consumer['money'])<int(ps['coin_num'])*int(ps['coin_price']):
+        flash("잔액이 부족합니다!")
+        return redirect(url_for('trading',username=username))
+    
+    seller_updated_money=int(seller['money'])+int(ps['coin_num'])*int(ps['coin_price']) # 판매자의 money를 게시글 수익만큼 증가
+    
+    consumer_updated_money=int(consumer['money'])-int(ps['coin_num'])*int(ps['coin_price']) # 구매자의 money를 게시글 수익만큼 감소
+    consumer_updated_coin=int(consumer['coin'])+int(ps['coin_num']) # 구매자의 coin을 게시글의 coin 만큼 증가
+    
+    # 판매자 users update
+    users.update_one({'username':ps['seller_username']},{"$set":{'money':seller_updated_money}})
+    
+    # 구매자 users update
+    users.update_one({'username':username},{"$set":{'money':consumer_updated_money,'coin':consumer_updated_coin}})
+    
+    # 구매한 post의 order보다 더 큰 order가 존재하면
+    # 그 order를 가진 게시글들의 order를 한 칸씩 앞으로 밀어줘야 함
+    # for문을 이용해 더 큰 order를 가진 게시글들을 찾기
+    big_ps=post.find({})
+    for big in big_ps:
+        if big['order']>int(post_order): # post document들의 'order'는 이미 int형
+            updated_big_order=big['order']-1
+            post.update_one({'order':big['order']},{"$set":{'order':updated_big_order}})
+
+    # 구매 완료 했으니 그 판매 게시글 없애기
+    post.delete_one({'order':int(post_order)})
+    
+    # overview를 위한 history collection update
+    ht=list(history.find({}))
+    if len(ht)>0: # 만약 거래 내역이 있다면
+        # 새로운 거래 내역의 order = 이전 거래 내역 + 1. 
+        # 즉, 가장 최신(가장 큰) order + 1
+        od=int(max(ht, key=lambda x:x['order'])['order'])+1
+    else: # 만약 거래 내역이 없다면
+        od=1
+    
+    new_history={
+        'order' : od,
+        'currentprice' : int(ps['coin_price'])
+    }
+    
+    history.insert_one(new_history)
+    
+    return redirect(url_for('trading',username=username))
+
+
+# 구매자 username == 판매자 username 이면 구매 버튼 대신 삭제 버튼 나타나게 해야 함
+@app.route('/delete_post/<username>/<post_order>')
+def delete_post(username,post_order):
+    big_ps=post.find({})
+    # 삭제한 post의 order보다 더 큰 order가 존재하면
+    # 그 order를 가진 게시글들의 order를 한 칸씩 앞으로 밀어줘야 함
+    # for문을 이용해 더 큰 order를 가진 게시글들을 찾기
+    for big in big_ps:
+        if big['order']>int(post_order): # post document들의 'order'는 이미 int형
+            updated_big_order=big['order']-1
+            post.update_one({'order':big['order']},{"$set":{'order':updated_big_order}})
+
+    post.delete_one({'order':int(post_order)}) # 여기서 post_order와 같은 order를 가진 post를 가져와야 한다
+    return redirect(url_for('trading',username=username))
