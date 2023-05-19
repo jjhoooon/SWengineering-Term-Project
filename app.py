@@ -155,7 +155,6 @@ def overview():
     # if (2번째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김. 그 price를 Last Price에 넣기
     # 그 두 개의 차이를 %로 환산해서 테이블의 change로 함
     ht=history.find({})
-    ht_json=json.dumps(ht)
     priceAndChange=dict()
     for history_field in ht:
         od=int(history_field['order'])
@@ -171,7 +170,7 @@ def overview():
         else: # 맨 처음 거래 change가 없음
             priceAndChange[od]=[cp,0]
     
-    return render_template('overview.html', ht=ht, ht_json=ht_json, priceAndChange=priceAndChange)
+    return render_template('overview.html', ht=ht, priceAndChange=priceAndChange)
 
 @app.route('/okoverview/<username>')
 def okoverview(username):

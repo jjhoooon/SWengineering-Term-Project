@@ -11,7 +11,6 @@
     <link href="../static/css/index.css" rel="stylesheet">
     <link href="../static/css/login.css" rel="stylesheet">
 </head>
-
 <body>
     <div id="home" class="big-bg">
         <header class="page-header wrapper">
@@ -41,22 +40,19 @@
             <div class="formbox">
                 <div class="formvalue">
                     <form action="{{ url_for('login') }}" method="POST">
-                        <h2>Login</h2>
                         <div class="inputbox">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username">
+                            <img class="user_img" src="../static/images/user.png">
+                            <input type="text" id="username" name="username" placeholder="Username">
                         </div>
                         <div class="inputbox">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password">
+                            <img class="pw_img" src="../static/images/padlock.png">
+                            <input type="password" id="password" name="password" placeholder="Password">
                         </div>
-                        <button>Log in</button>
+                        <button>LOG IN</button>
                     </form>
                 </div>
             </div>
         </section>
     </div>
 </body>
-
-    
 </html>
