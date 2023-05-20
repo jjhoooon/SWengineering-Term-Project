@@ -53,8 +53,6 @@
                     form.submit();
                 }
             }
-
-            
         </script>
     </head>
     <body>
@@ -84,12 +82,22 @@
             </header>
             <div class="home-content wrapper">
                 <div class="account_wrapper">
-                    <h1>Welcome to your account!</h1>
-                    <h2>Username! : {{username}}</h2>
-                    <p>Your money : {{money.money}}</p>
-                    <p>Your coin : {{coin.coin}}</p>
-                    <button id="deposit" onclick="updateMoney()">입금하기!!</button>
-                    <button id="withdraw" onclick="withdrawMoney()">출금하기!!</button>
+                    <h1>{{username}} , Welcome to your account!</h1>
+                    <hr/>
+                    <table class="account_table">
+                        <tr>
+                            <td class="yours">Your money</td>
+                            <td class="mc">{{money.money}}</td>
+                        </tr>
+                        <tr>
+                            <td class="yours">Your coin</td>
+                            <td class="mc">{{coin.coin}}</td>
+                        </tr>
+                        <tr>
+                            <td><button id="deposit" onclick="updateMoney()">Deposit</button></td>
+                            <td><button id="withdraw" onclick="withdrawMoney()">Withdraw</button></td>
+                        </tr>
+                    </table>
                 </div>
             </div><!-- /.home-content-->
         </div><!-- /#home -->
