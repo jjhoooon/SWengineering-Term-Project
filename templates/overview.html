@@ -1,89 +1,101 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="Software Engineering Term Project">
-        <title>overview</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Software Engineering Term Project" />
+    <title>overview</title>
 
-        <!--CSS-->
-        <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
-        <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
-        <link href="../static/css/index.css" rel="stylesheet">
-        <link href="../static/css/overview.css" rel="stylesheet">
+    <!--CSS-->
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Philosopher"
+      rel="stylesheet"
+    />
+    <link href="../static/css/index.css" rel="stylesheet" />
+    <link href="../static/css/overview.css" rel="stylesheet" />
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        
-    </head>
-    <body>
-        <div id="home" class="big-bg">
-          <header class="page-header wrapper">
-            <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images/mareketLogo.jpeg" alt="마켓 홈"></a></h1>
-            <nav>
-                <ul class="main-nav">
-                    <div> 
-                    </div>
-                    <div id="menu_tab">
-                        <li><a href="{{ url_for('login') }}">Login</a>
-                    </div>
-                    <div id="menu_tab">
-                    <li><a href="{{ url_for('signup') }}">Sign up</a></li>
-                    </div>
-                </ul>
-            </nav>
-        </header>
-            <div class="home-content wrapper">
-              <div class="overviewWrapper">
-                <div class="history">
-                    <table class="history_table">
-                      <tr>
-                        <th class="price_th">Last Price</th> <!-- flask나 mongodb에서 시간 계산하는거 있으면 그걸 통해서 가장 최근 거래 가격 표시 -->
-                        <th class="change_th">Change</th> <!-- 여기서 trading 페이지에서 거래했던 가격을 통해 %로 + - 표시 -->
-                      </tr>
-                      {% if history %} <!-- 거래 내역이 있다면 -->
-                        {% for v in priceAndChange.values() %}
-                          <tr>
-                            <td class="price_td">{{v[0]}}</td>
-                            <td class="change_td">{{v[1]}}%</td>
-                          </tr>
-                        {% endfor %}
-                      {% endif %}
-                    </table>
-                </div>
-                <!-- chart.js -->
-                <div id="chart_div">
-                  <canvas id="myChart" style="background-color: white;"></canvas>
-                  
-                  <script>
-                    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div id="home" class="big-bg">
+      <header class="page-header wrapper">
+        <h1>
+          <a href="{{ url_for('index') }}"
+            ><img
+              class="logo"
+              src="../static/images/mareketLogo.jpeg"
+              alt="마켓 홈"
+          /></a>
+        </h1>
+        <nav>
+          <ul class="main-nav">
+            <div></div>
+            <div id="menu_tab">
+              <li><a href="{{ url_for('login') }}">Login</a></li>
+            </div>
 
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    new Chart(ctx, {
-                      type: 'line',
-                      data: {
-                        labels: {{ orders | tojson }},
-                        datasets: [{
-                          label: 'Current Price',
-                          data: {{ prices | tojson }},
-                          fill: false,
-                          borderColor: 'rgba(75, 192, 192, 0.8)',
-                          borderWidth: 1
-                        }]
-                      },
-                      options: {
-                        responsive: true,
-                        scales: {
-                          y: {
-                            beginAtZero: true
-                          }
-                        }
-                      }
-                    });
-                  </script>
-                  
-                </div>
-              </div>
-          </div><!-- /.home-content-->
-        </div><!-- /#home -->
-    </body>
+            <div id="menu_tab">
+              <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+            </div>
+          </ul>
+        </nav>
+      </header>
+      <div class="home-content wrapper">
+        <div class="overviewWrapper">
+          <div class="history">
+            <table class="history_table">
+              <tr>
+                <th class="price_th">Last Price</th>
+                <!-- flask나 mongodb에서 시간 계산하는거 있으면 그걸 통해서 가장 최근 거래 가격 표시 -->
+                <th class="change_th">Change</th>
+                <!-- 여기서 trading 페이지에서 거래했던 가격을 통해 %로 + - 표시 -->
+              </tr>
+              {% if history %}
+              <!-- 거래 내역이 있다면 -->
+              {% for v in priceAndChange.values() %}
+              <tr>
+                <td class="price_td">{{v[0]}}</td>
+                <td class="change_td">{{v[1]}}%</td>
+              </tr>
+              {% endfor %} {% endif %}
+            </table>
+          </div>
+          <!-- chart.js -->
+          <div id="chart_div">
+            <canvas id="myChart" style="background-color: white"></canvas>
+
+            <script>
+
+
+              var ctx = document.getElementById('myChart').getContext('2d');
+              new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: {{ orders | tojson }},
+                  datasets: [{
+                    label: 'Current Price',
+                    data: {{ prices | tojson }},
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192, 0.8)',
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
+            </script>
+          </div>
+        </div>
+      </div>
+      <!-- /.home-content-->
+    </div>
+    <!-- /#home -->
+  </body>
 </html>

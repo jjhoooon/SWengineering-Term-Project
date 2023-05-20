@@ -203,7 +203,7 @@ def okoverview(username):
     orders = [str(d.get('order')) for d in order_list]
     prices = [str(d.get('currentprice')) for d in price_list]
     
-    return render_template('okoverview.html',username=username, ht=ht, priceAndChange=priceAndChange, orders=orders, prices=prices)
+    return render_template('okoverview.html',username=username, history=ht, priceAndChange=priceAndChange, orders=orders, prices=prices)
 
 @app.route('/trading/<username>')
 def trading(username):
@@ -274,7 +274,7 @@ def market_trading(username):
     money_data=users.find_one({"username":username},{"money":1})
     coin_data=users.find_one({"username":username},{"coin":1})
     
-    return render_template('trading.html',username=username,money=money_data,coin=coin_data,market_coin=updated_market_coin)
+    return redirect(url_for('trading',username=username))
 
 # url_for와 함수 이름 일치 시키자
 @app.route('/posting/<username>')
