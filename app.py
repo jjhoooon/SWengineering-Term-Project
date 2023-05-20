@@ -147,7 +147,7 @@ def withdraw_money(username):
 if __name__ == '__main__':
     app.run(debug=True) 
 
-@app.route('/overview')
+@app.route('/overview', methods=['GET','POST'])
 def overview():
     # history db를 이용
     # 테이블의 Last Price는 맨 처음에는 currentprice. 처음이니까 변화 없으니 change는 없음.
@@ -168,7 +168,15 @@ def overview():
             priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
         else: # 맨 처음 거래 change가 없음
             priceAndChange[od]=[cp,0]
-    return render_template('overview.html', history=ht, priceAndChange=priceAndChange)
+    
+    # Chart
+    order_list = history.find({},{'order':1})
+    price_list = history.find({},{'currentprice':1})
+    
+    orders = [str(d.get('order')) for d in order_list]
+    prices = [str(d.get('currentprice')) for d in price_list]
+
+    return render_template('overview.html', history=ht, priceAndChange=priceAndChange, orders=orders, prices=prices)
 
 @app.route('/okoverview/<username>')
 def okoverview(username):

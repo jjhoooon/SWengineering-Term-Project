@@ -12,32 +12,8 @@
         <link href="../static/css/index.css" rel="stylesheet">
         <link href="../static/css/overview.css" rel="stylesheet">
 
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script>
-          // 스크립트 내에서 전달된 컬렉션 사용
-          var history = '{{ history }}';
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         
-          google.charts.load('current', {'packages':['corechart']});
-          google.charts.setOnLoadCallback(drawChart);
-        
-          function drawChart() {
-            // 컬렉션을 기반으로 데이터 배열 생성
-            var data = google.visualization.arrayToDataTable(history);
-        
-            // 차트 옵션 설정
-            var options = {
-              title: 'My Chart',
-              curveType: 'function',
-              legend: 'none'
-            };
-        
-            // 차트 인스턴스 생성
-            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        
-            // 차트 그리기
-            chart.draw(data, options);
-          }
-        </script>        
     </head>
     <body>
         <div id="home" class="big-bg">
@@ -74,7 +50,38 @@
                       {% endif %}
                     </table>
                 </div>
-                <div id="chart_div"></div>
+                <!-- chart.js -->
+                <div id="chart_div">
+                  <canvas id="myChart" style="background-color: white;"></canvas>
+                  
+                  <script>
+                    
+
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    new Chart(ctx, {
+                      type: 'line',
+                      data: {
+                        labels: {{ orders | tojson }},
+                        datasets: [{
+                          label: 'Current Price',
+                          data: {{ prices | tojson }},
+                          fill: false,
+                          borderColor: 'rgba(75, 192, 192, 0.8)',
+                          borderWidth: 1
+                        }]
+                      },
+                      options: {
+                        responsive: true,
+                        scales: {
+                          y: {
+                            beginAtZero: true
+                          }
+                        }
+                      }
+                    });
+                  </script>
+                  
+                </div>
               </div>
           </div><!-- /.home-content-->
         </div><!-- /#home -->
