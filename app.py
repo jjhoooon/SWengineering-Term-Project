@@ -316,7 +316,7 @@ def post_up(username):
     updated_coin=int(user['coin'])-int(coin_num)
     users.update_one({'username':username},{"$set":{'coin':updated_coin}})
     
-    return redirect(url_for('okindex',username=username))
+    return redirect(url_for('trading',username=username))
 
 @app.route('/purchase/<username>/<post_order>')
 def purchase(username,post_order):
