@@ -37,27 +37,25 @@
         {% endif %}
         {% endwith %}
         <section>
-            <div class="formbox">
-                <div class="formvalue">
-                    <form action="{{ url_for('signup') }}" method="POST">
+                <div class="signup_wrapper">
+                    <div class="signup_header">Sign Up</div>
+                    <form class="signup_content" action="{{ url_for('signup') }}" method="POST">
                         <div class="inputbox">
                             <img class="user_img" src="../static/images/user.png">
-                            <input type="text" id="username" name="username">
+                            <input type="text" id="username" name="username" placeholder="Username">
                         </div>
                         <div class="inputbox">
                             <img class="pw_img" src="../static/images/padlock.png">
-                            <input type="password" id="password" name="password">
+                            <input type="password" id="password" name="password" placeholder="Password">
                         </div>
                         <div class="inputbox">
                             <img class="confirm_img" src="../static/images/check-mark.png">
-                            <input type="password" id="comfirm_password" name="password">
+                            <input type="password" id="comfirm_password" name="password" placeholder="Confirm Password">
                         </div>
                         <button>Sign up</button>
                     </form>
                 </div>
-            </div>
-    </div>
-    </section>
+        </section>
     </div>
 </body>
 </html>
