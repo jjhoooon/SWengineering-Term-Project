@@ -37,9 +37,9 @@
         {% endif %}
         {% endwith %}
         <section>
-            <div class="formbox">
-                <div class="formvalue">
-                    <form action="{{ url_for('login') }}" method="POST">
+                <div class="login_wrapper">
+                    <div class="login_header">Login</div>
+                    <form class="login_content" action="{{ url_for('login') }}" method="POST">
                         <div class="inputbox">
                             <img class="user_img" src="../static/images/user.png">
                             <input type="text" id="username" name="username" placeholder="Username">
@@ -51,7 +51,6 @@
                         <button>LOG IN</button>
                     </form>
                 </div>
-            </div>
         </section>
     </div>
 </body>
