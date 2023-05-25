@@ -1,3 +1,9 @@
+.home-content_wrapper{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 5%;
+}
 
 .account_wrapper {
     font-family: sans-serif;
