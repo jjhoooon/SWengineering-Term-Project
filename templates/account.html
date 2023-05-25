@@ -82,22 +82,17 @@
             </header>
             <div class="home-content wrapper">
                 <div class="account_wrapper">
-                    <h1>{{username}} , Welcome to your account!</h1>
-                    <hr/>
-                    <table class="account_table">
-                        <tr>
-                            <td class="yours">Your money</td>
-                            <td class="mc">{{money.money}}</td>
-                        </tr>
-                        <tr>
-                            <td class="yours">Your coin</td>
-                            <td class="mc">{{coin.coin}}</td>
-                        </tr>
-                        <tr>
-                            <td><button id="deposit" onclick="updateMoney()">Deposit</button></td>
-                            <td><button id="withdraw" onclick="withdrawMoney()">Withdraw</button></td>
-                        </tr>
-                    </table>
+                    <div class="account_header">
+                        <div class="account_header_content">{{username}}, Welcome to your Account.</div>
+                    </div>
+                    <div class="account_main">
+                        <div class="account_main_content">Your Money : {{money.money}} </div>
+                        <div class="account_main_content">Your Coin : {{coin.coin}}</div>
+                    </div>
+                    <div class="account_footer">
+                        <button id="deposit" onclick="updateMoney()">Deposit</button>
+                        <button id="withdraw" onclick="withdrawMoney()">Withdraw</button>
+                    </div>
                 </div>
             </div><!-- /.home-content-->
         </div><!-- /#home -->
