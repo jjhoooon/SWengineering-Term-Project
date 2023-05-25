@@ -65,6 +65,11 @@ def signup():
 def signup_post():
     username = request.form['username']
     password = request.form['password']
+    confirm_password = request.form['confirm_password']
+    
+    if password != confirm_password:
+        flash('비밀번호가 일치하지 않습니다.')
+        return redirect(url_for('signup'))
 
     # MongoDB에서 이미 등록된 사용자인지 확인
     user = users.find_one({'username': username})
