@@ -4,8 +4,31 @@
   width: 100%;
   height: 600px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 4mm ridge rgba(236, 239, 201, 0.6);
+  border-top: 4mm ridge rgba(211, 220, 50, .6);
+  border-radius: 20px;
+  background-color: rgb(247, 249, 241);
+}
+
+.overview_header{
+  width: 100%;
+  display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
+  font-family: sans-serif;
+  font-size: 50px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.overview_main{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -31,16 +54,18 @@
 .history_table th.price_th, th.change_th{
   width:100px;
   height: 30px;
+  background-color: rgb(247, 249, 241);
 }
 
 .history_table td.price_td, td.change_td{
   height: 20px;
   border-bottom: 2px solid #182026;
-}
+} 
 
-#chart_div{
+.chart_div{
   width: 500px;
-  height: 400px;
+  height: 500px;
+  padding-top: 80px;
 }
 
 
