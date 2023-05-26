@@ -276,9 +276,6 @@ def market_trading(username):
     updated_money=int(user['money'])-(market_trading*100)
     users.update_one({'username':username},{"$set":{'money':updated_money,'coin':updated_coin}})
     
-    money_data=users.find_one({"username":username},{"money":1})
-    coin_data=users.find_one({"username":username},{"coin":1})
-    
     return redirect(url_for('trading',username=username))
 
 # url_for와 함수 이름 일치 시키자
@@ -317,11 +314,7 @@ def post_up(username):
     
     post.insert_one(postup)
     
-    # post 올릴 때 seller의 coin 개수가 post에 올린 coin 개수만큼 줄어듦
-    updated_coin=int(user['coin'])-int(coin_num)
-    users.update_one({'username':username},{"$set":{'coin':updated_coin}})
-    
-    return redirect(url_for('okindex',username=username))
+    return redirect(url_for('trading',username=username))
 
 @app.route('/purchase/<username>/<post_order>')
 def purchase(username,post_order):
@@ -335,13 +328,15 @@ def purchase(username,post_order):
         flash("잔액이 부족합니다!")
         return redirect(url_for('trading',username=username))
     
+    # 구매가 정상적으로 완료되면 seller의 coin 개수가 post에 올린 coin 개수만큼 줄어듦
+    seller_updated_coin=int(seller['coin'])-int(ps['coin_num'])
     seller_updated_money=int(seller['money'])+int(ps['coin_num'])*int(ps['coin_price']) # 판매자의 money를 게시글 수익만큼 증가
     
     consumer_updated_money=int(consumer['money'])-int(ps['coin_num'])*int(ps['coin_price']) # 구매자의 money를 게시글 수익만큼 감소
     consumer_updated_coin=int(consumer['coin'])+int(ps['coin_num']) # 구매자의 coin을 게시글의 coin 만큼 증가
     
     # 판매자 users update
-    users.update_one({'username':ps['seller_username']},{"$set":{'money':seller_updated_money}})
+    users.update_one({'username':ps['seller_username']},{"$set":{'money':seller_updated_money,'coin':seller_updated_coin}})
     
     # 구매자 users update
     users.update_one({'username':username},{"$set":{'money':consumer_updated_money,'coin':consumer_updated_coin}})
