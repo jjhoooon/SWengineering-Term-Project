@@ -11,30 +11,42 @@ section{
 }
 
 .post_wrapper{
-    width: 100%;
-    display:flex;
+    display: flex;
     justify-content: center;
-
+    font-family: sans-serif;
+    font-weight: bold;
 }
 
 .post_content_wrapper {
-    width: 500px;
-    height: 450px;
-    display: flex;
+    width: 450px;
+    height: 500px;
+    display: flex;  
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    text-align: center;
-    margin-top: 50px;
-
+  
     border: 4mm ridge rgba(236, 239, 201, 0.6);
     border-top: 4mm ridge rgba(211, 220, 50, .6);
     border-radius: 20px;
     background-color: rgb(247, 249, 241);
 }
 
+.post_header{
+    font-size: 30px;
+}
+
+.post_main{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 220px;
+    background-color: rgb(230, 240, 207);
+}
+
 .inputWrapper{
-    width: 450px;
+    width: 500px;
     height: 100px;
     display: flex;
     flex-direction:column ; 
@@ -42,48 +54,29 @@ section{
 }
 
 .input_title{
-    margin-right: 150px;
-    margin-top: 5px;
+    margin:5px 150px 10px 0;
     font-size: 20px;
     font-weight: bold;
 }
 
 .postInput{
-    margin-top: 20px;
-    border: 3px solid black;
-}
-
-
-h1 {
-    color: #333;
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-h2 {
-    color: #666;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-p {
-    color: #888;
-    font-size: 16px;
-    margin-bottom: 5px;
+    width: 100%;
+    height: 45px;
+    border-radius: 5px;
 }
 
 #deposit {
-    width: 40%;
     background-color: #4CAF50;
     color: white;
     border: none;
+    border-radius: 10px;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    font-weight: 900;
     margin-top: 20px;
-    border-radius: 5px;
     cursor: pointer;
 }
 

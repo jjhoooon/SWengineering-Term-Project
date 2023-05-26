@@ -47,16 +47,20 @@
                 <div class="post_wrapper" >
                     <form action="{{url_for('post_up',username=username)}}" method="POST">
                     <div class="post_content_wrapper">   
-                        <h1>Seller Name : {{username}}</h1>
-                        <div class="inputWrapper">
-                            <div class="input_title">코인 개수</div>
-                            <input type="number" class="postInput" name="coin_num" placeholder="판매할 코인 개수를 입력하시오."/>
+                        <div class="post_header">Seller Name : {{username}}</div>
+                        <div class="post_main">
+                            <div class="inputWrapper">
+                                <div class="input_title">코인 개수</div>
+                                <input type="number" class="postInput" name="coin_num" placeholder="판매할 코인 개수를 입력하시오."/>
+                            </div>
+                            <div class="inputWrapper">
+                                <div class="input_title">코인 가격</div>
+                                <input type="number" class="postInput" name="coin_price" placeholder="코인 개수당 가격을 입력하시오."/>
+                            </div>
                         </div>
-                        <div class="inputWrapper">
-                            <div class="input_title">코인 가격</div>
-                            <input type="number" class="postInput" name="coin_price" placeholder="코인 개수당 가격을 입력하시오."/>
+                        <div class="post_footer">
+                            <button id="deposit">게시하기</button>
                         </div>
-                        <button id="deposit">게시하기</button>
                     </div>
                 </form>
                 </div>
