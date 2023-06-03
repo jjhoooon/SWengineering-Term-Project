@@ -5,4 +5,13 @@
 <pre>npm install flask
 npm install flask_pymongo </pre>
 
-### env
+### run in myenv
+<pre>
+myenv\Scripts\activate.bat 
+$env:FLASK_DEBUG="True"
+</pre>
+
+### run
+<pre>
+flask run
+</pre>
