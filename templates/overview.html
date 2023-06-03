@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="Software Engineering Term Project" />
+    <title>overview</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Philosopher"
+      rel="stylesheet"
+    />
+    <link href="../static/css/index.css" rel="stylesheet" />
+    <link href="../static/css/overview.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div id="home" class="big-bg">
+      <header class="page-header wrapper">
+        <h1>
+          <a href="{{ url_for('index') }}"
+            ><img
+              class="logo"
+              src="../static/images/mareketLogo.jpeg"
+              alt="마켓 홈"
+          /></a>
+        </h1>
+        <nav>
+          <ul class="main-nav">
+            <div></div>
+            <div id="menu_tab">
+              <li><a href="{{ url_for('login') }}">Login</a></li>
+            </div>
+            <div id="menu_tab">
+              <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+            </div>
+          </ul>
+        </nav>
+      </header>
+      <div class="home-content wrapper">
+        <div class="overviewWrapper">
+          <div class="overview_header">
+            <div>Price Table</div>
+            <div>Price Chart</div>
+          </div>
+          <div class="overview_main">
+          <div class="history">
+              <table class="history_table">
+                <tr>
+                  <th class="price_th">Last Price</th>
+                  <th class="change_th">Change</th>
+                </tr>
+                {% if history %}
+                  {% for v in priceAndChange.values() %}
+                    <tr>
+                      <td class="price_td">{{v[0]}}</td>
+                      <td class="change_td">{{v[1]}}%</td>
+                    </tr>
+                  {% endfor %}
+                {% endif %}
+              </table>
+          </div>
+          <div class="chart_div">
+            <canvas id="myChart" style="background-color: white;"></canvas>
+            <script>
+              var ctx = document.getElementById('myChart').getContext('2d');
+              new Chart(ctx, {
+                type: 'line',
+                data: {
+                  labels: {{ orders | tojson }},
+                  datasets: [{
+                    label: 'Current Price',
+                    data: {{ prices | tojson }},
+                    fill: false,
+                    borderColor: 'rgba(75, 192, 192, 0.8)',
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
+            </script>
+          </div>
+          </div> 
+        </div>
+    </div>
+  </body>
+</html>

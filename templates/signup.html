@@ -4,24 +4,27 @@
 <head>
     <meta charset="utf-8">
     <title>Login</title>
-
     <!--CSS-->
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
     <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
     <link href="../static/css/index.css" rel="stylesheet">
     <link href="../static/css/signup.css" rel="stylesheet">
 </head>
-
 <body>
     <div id="home" class="big-bg">
         <header class="page-header wrapper">
-            <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images//binanceLogo.jpeg"
+            <h1><a href="{{ url_for('index') }}"><img class="logo" src="../static/images/mareketLogo.jpeg"
                         alt="WCB 마켓 홈"></a></h1>
             <nav>
                 <ul class="main-nav">
-                    <li><a href="overview.html">Overview</a></li>
-                    <li><a href="{{ url_for('login') }}">로그인해줘</a>
+                    <div> 
+                    </div>
+                    <div id="menu_tab">
+                        <li><a href="{{ url_for('login') }}">Login</a>
+                    </div>
+                    <div id="menu_tab">
                     <li><a href="{{ url_for('signup') }}">Sign up</a></li>
+                    </div>
                 </ul>
             </nav>
         </header>
@@ -34,29 +37,25 @@
         {% endif %}
         {% endwith %}
         <section>
-            <div class="formbox">
-                <div class="formvalue">
-                    <form action="{{ url_for('signup') }}" method="POST">
-                        <h1>Signup</h1>
+                <div class="signup_wrapper">
+                    <div class="signup_header">Sign Up</div>
+                    <form class="signup_content" action="{{ url_for('signup') }}" method="POST">
                         <div class="inputbox">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username">
+                            <img class="user_img" src="../static/images/user.png">
+                            <input type="text" id="username" name="username" placeholder="Username">
                         </div>
                         <div class="inputbox">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password">
+                            <img class="pw_img" src="../static/images/padlock.png">
+                            <input type="password" id="password" name="password" placeholder="Password">
                         </div>
                         <div class="inputbox">
-                            <label for="confirm_password">Confirm Password</label>
-                            <input type="password" id="comfirm_password" name="password">
+                            <img class="confirm_img" src="../static/images/check-mark.png">
+                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password">
                         </div>
                         <button>Sign up</button>
                     </form>
                 </div>
-            </div>
-    </div>
-    </section>
+        </section>
     </div>
 </body>
-
 </html>

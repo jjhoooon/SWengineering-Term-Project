@@ -1,0 +1,76 @@
+.home-content_wrapper{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 5%;
+}
+
+.account_wrapper {
+    font-family: sans-serif;
+    width: 450px;
+    height: 550px;
+    display: flex;  
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  
+    border: 4mm ridge rgba(236, 239, 201, 0.6);
+    border-top: 4mm ridge rgba(211, 220, 50, .6);
+    border-radius: 20px;
+    background-color: rgb(247, 249, 241);
+}
+
+.account_header_content{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.account_main{
+    width: 100%;
+    height:30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: rgb(230, 240, 207);
+}
+
+
+#deposit {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 900;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#withdraw {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 900;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+#deposit:hover {
+    background-color: #45a049;
+}
+
+#withdraw:hover {
+    background-color: rgba(223, 2, 2, 0.718);
+}
