@@ -35,7 +35,6 @@
 .history{
   width: 800px; 
   height: 400px;
-  /* overflow : auto는 content가 범위를 벗어날 경우 스크롤 생성해준다 */
   overflow: auto;
   overflow-x: hidden;
 }
@@ -44,10 +43,7 @@
   text-align:center; 
   width: 100%; 
   height: 400px;
-  /* header의 content를 수평 정렬하고 싶을 때 */
   float:left;
-  /* 그냥 border 설정을 안하면 테이블 테두리가 없다. */
-  /* border-collapse 라는 속성에서 collapse는 인접한 셀 간의 경계선을 합치는 역할 */
   border-collapse: collapse;
 }
 
@@ -67,10 +63,6 @@
   height: 500px;
   padding-top: 80px;
 }
-
-
-
-/* history list 점차 보완예정 */
 
 .history {
   margin: 20px auto;

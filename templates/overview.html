@@ -6,7 +6,6 @@
     <meta name="description" content="Software Engineering Term Project" />
     <title>overview</title>
 
-    <!--CSS-->
     <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css" />
     <link
       href="https://fonts.googleapis.com/css?family=Philosopher"
@@ -14,7 +13,6 @@
     />
     <link href="../static/css/index.css" rel="stylesheet" />
     <link href="../static/css/overview.css" rel="stylesheet" />
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
@@ -34,7 +32,6 @@
             <div id="menu_tab">
               <li><a href="{{ url_for('login') }}">Login</a></li>
             </div>
-
             <div id="menu_tab">
               <li><a href="{{ url_for('signup') }}">Sign up</a></li>
             </div>
@@ -47,13 +44,12 @@
             <div>Price Table</div>
             <div>Price Chart</div>
           </div>
-
           <div class="overview_main">
           <div class="history">
               <table class="history_table">
                 <tr>
-                  <th class="price_th">Last Price</th> <!-- flask나 mongodb에서 시간 계산하는거 있으면 그걸 통해서 가장 최근 거래 가격 표시 -->
-                  <th class="change_th">Change</th> <!-- 여기서 trading 페이지에서 거래했던 가격을 통해 %로 + - 표시 -->
+                  <th class="price_th">Last Price</th>
+                  <th class="change_th">Change</th>
                 </tr>
                 {% if history %}
                   {% for v in priceAndChange.values() %}
@@ -67,7 +63,6 @@
           </div>
           <div class="chart_div">
             <canvas id="myChart" style="background-color: white;"></canvas>
-            
             <script>
               var ctx = document.getElementById('myChart').getContext('2d');
               new Chart(ctx, {
@@ -95,8 +90,6 @@
           </div>
           </div> 
         </div>
-      <!-- /.home-content-->
     </div>
-    <!-- /#home -->
   </body>
 </html>

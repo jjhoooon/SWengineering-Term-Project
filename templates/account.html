@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
-
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="Software Engineering Term Project">
         <title>계좌정보</title>
-
-        <!--CSS-->
         <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
         <link href="https://fonts.googleapis.com/css?family=Philosopher" rel="stylesheet">
         <link href="../static/css/index.css" rel="stylesheet">
         <link href="../static/css/account.css" rel="stylesheet">
-
         <script>
             function updateMoney() {
                 var newMoney = prompt('입금하실 금액을 입력하세요!');
@@ -26,14 +22,13 @@
                     input.name = 'new_money';
                     input.value = newMoney;
 
-                    form.appendChild(input); // 폼에 input 엘리먼트 추가
+                    form.appendChild(input); 
 
-                    document.body.appendChild(form); // 폼을 문서에 추가
+                    document.body.appendChild(form);
 
                     form.submit();
                 }
             }
-
             function withdrawMoney() {
                 var newMoney = prompt('출금하실 금액을 입력하세요!');
                 if (newMoney !== null) {
@@ -46,9 +41,9 @@
                     input.name = 'new_money';;
                     input.value = newMoney;
 
-                    form.appendChild(input); // 폼에 input 엘리먼트 추가
+                    form.appendChild(input);
 
-                    document.body.appendChild(form); // 폼을 문서에 추가
+                    document.body.appendChild(form); 
 
                     form.submit();
                 }
@@ -94,8 +89,7 @@
                         <button id="withdraw" onclick="withdrawMoney()">Withdraw</button>
                     </div>
                 </div>
-            </div><!-- /.home-content-->
-        </div><!-- /#home -->
+            </div>
+        </div>
     </body>
-
 </html>

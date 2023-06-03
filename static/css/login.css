@@ -47,8 +47,6 @@ section{
     
 }
 
-
-/* id/pw 칸과 그림 칸 모두 포함해서 적용 */
 .inputbox{
     display: flex;
     flex-direction: row;
@@ -57,7 +55,6 @@ section{
     width: 450px;
 }
 
-/* id/pw 칸만 적용 */
 .inputbox input {
     width: 60%;
     height: 50px;
