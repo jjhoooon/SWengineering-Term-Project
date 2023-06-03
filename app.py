@@ -82,6 +82,8 @@ def account(username):
         coin_data=users.find_one({"username":username},{"coin":1}) 
         
         return render_template('account.html', money=money_data,coin=coin_data,username=username)
+    
+if __name__ == '__main__':
 
 
 @app.route('/update_money/<username>', methods=['GET','POST'])    
