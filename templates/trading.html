@@ -72,7 +72,7 @@
                       <div class="marketCoin">
                         <h2>Market Coin : {{market_coin}}</h2>
                       </div>
-                      <button class="marketBuy" onclick="market_trading()">구매 하기</button>
+                      <button class="marketBuy" onclick="market_trading()">Buy</button>
                     </div>
                   </div>
                   <div class="accountWrapper">
@@ -84,23 +84,27 @@
                     <div class="userTrading_Wrapper">
                       <div class="post_Wrapper">
                         <div class="post_header">
-                          <div>order</div>
-                          <div>num</div>
-                          <div>price</div>
-                          <div>button</div>
+                          <div class="table_entry">
+                            <div>order</div>
+                            <div>num</div>
+                            <div>price</div>
+                          </div>
+                          <div class="button_entry">
+                            <div>button</div>
+                          </div>
                         </div>
                         <div class="post_scroll" style="overflow-y:scroll">
                           <!-- for문으로 판매 게시글 리스트 테이블로 만들기 -->
                           {% if ps %} <!-- 만약 post가 있다면 -->
                             {% for post_list in ps %}
                             <div class="post_content">
-                              <div>{{post_list.order}}</div>
+                              <div class="order_entry">{{post_list.order}}</div>
                               <div>{{post_list.coin_num}}</div>
                               <div>{{post_list.coin_price}}</div>
                               {% if username!=post_list.seller_username %}
-                                <div class="post_purchase"><a href="{{url_for('purchase',username=username,post_order=post_list.order)}}"><button type="button">구매</button></a></div>
+                                <div class="post_purchase"><a href="{{url_for('purchase',username=username,post_order=post_list.order)}}"><button type="button">Buy</button></a></div>
                               {% else %}
-                                <div class="post_delete"><a href="{{url_for('delete_post',username=username,post_order=post_list.order)}}"><button type="button">삭제</button></a></div>
+                                <div class="post_delete"><a href="{{url_for('delete_post',username=username,post_order=post_list.order)}}"><button type="button">Cancel</button></a></div>
                               {% endif %}
                               <!-- 여기엔 구매 관련  -->
                               <!-- url_for 안에서 post_list.order 값을 쓰고 싶다면 중괄호를 쓰면 안된다 -->
@@ -112,7 +116,7 @@
                           </div>
                         </div>
                       <div class="post_button_wrapper">
-                        <div class="post_button"><a href="{{ url_for('posting',username=username) }}">Post</a></div>
+                        <div class="post_button"><a href="{{ url_for('posting',username=username) }}"> Post </a></div>
                       </div>
                     </div>
                   </div>

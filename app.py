@@ -296,6 +296,11 @@ def post_up(username):
     # 현재 사용자 정보 
     user = users.find_one({'username': username})
     
+    # coin 개수와 가격이 0 이하로 잘못 입력하거나 유저 보유 코인보다 게시글 게시 코인이 더 많으면 오류 발생
+    if int(coin_num)<=0 or int(coin_price)<=0 or user['coin']<int(coin_num):
+        flash('잘못 입력하셨습니다! 다시 입력해주세요')
+        return render_template('post.html',username=username)
+    
     # 현재 판매 게시글 현황
     ps=list(post.find({}))
     if len(ps)>0: # 만약 판매 게시글이 있다면
