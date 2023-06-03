@@ -1,5 +1,5 @@
 # SWengineering-Term-Project : CoinMarket
-![image](https://github.com/ragnar725/SWengineering-Term-Project/assets/58600024/21272f24-c566-4cc0-9ab6-c3cfd1d6085c)
+![image](https://github.com/ragnar725/SWengineering-Term-Project/assets/58600024/1b6c53dc-0aed-4afc-8b57-13e0b7dce6cd)
 
 ### Installation
 <pre>npm install flask
