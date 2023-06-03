@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, escape, jsonify
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_pymongo import PyMongo
 from flask import flash
 
