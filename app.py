@@ -317,3 +317,7 @@ def delete_post(username,post_order):
 
     post.delete_one({'order':int(post_order)})
     return redirect(url_for('trading',username=username))
+
+
+if __name__ == '__main__':
+    app.run(debug = True)
