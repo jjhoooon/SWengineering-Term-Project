@@ -18,12 +18,9 @@
           input.type = 'hidden';
           input.name = 'market_trading';
           input.value = marketCoin; 
-          // prompt에서 입력한 개수가 marketCoin으로 들어가고
-          // 그게 input 값으로 들어가려면 input.value=marketCoin을 꼭 해줘야 함
-
-          // 이 순서로 해야됨 (form에 input 넣고 그 form을 document에 넣기)
-          form.appendChild(input); // 폼에 input 엘리먼트 추가
-          document.body.appendChild(form); // 폼을 문서에 추가
+            
+          form.appendChild(input); 
+          document.body.appendChild(form); 
           form.submit();
         }
       }
@@ -33,9 +30,7 @@
     <link href="../static/css/index.css" rel="stylesheet">
     <link href="../static/css/trading.css" rel="stylesheet">
   </head>
-
     <body>
-        <!-- 이걸 해야 flash가 뜸 -->
         {% with messages = get_flashed_messages() %}
             {% if messages %}
             <script>
@@ -94,8 +89,7 @@
                           </div>
                         </div>
                         <div class="post_scroll" style="overflow-y:scroll">
-                          <!-- for문으로 판매 게시글 리스트 테이블로 만들기 -->
-                          {% if ps %} <!-- 만약 post가 있다면 -->
+                          {% if ps %} 
                             {% for post_list in ps %}
                             <div class="post_content">
                               <div class="order_entry">{{post_list.order}}</div>
@@ -116,6 +110,6 @@
                       </div>
                     </div>
                   </div>
-          </div><!-- /.home-content-->
-        </div><!-- /#home -->
+          </div>
+        </div>
     </body>
