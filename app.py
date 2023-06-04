@@ -127,21 +127,27 @@ def withdraw_money(username):
 
 @app.route('/overview', methods=['GET','POST'])
 def overview():
+    # history db를 이용
+    # 테이블의 Last Price는 맨 처음에는 currentprice. 처음이니까 변화 없으니 change는 없음.
+    # if (2번째 이상의 거래가 발생하면) currentprice는 recentprice가 되고 새 currentprice가 생김. 그 price를 Last Price에 넣기
+    # 그 두 개의 차이를 %로 환산해서 테이블의 change로 함
     ht=history.find({})
     priceAndChange=dict()
     for history_field in ht:
         od=int(history_field['order'])
         cp=int(history_field['currentprice'])
-        if od>=2:
+        if od>=2: # 2번째 이상의 거래가 발생했다면
             previous_od=od-1
             previous_ht=history.find_one({'order':previous_od})
-
+            # 이전 order의 currentprice = 현재 order의 recentprice
             rp=int(previous_ht['currentprice'])
+            # 변화량 계산 , 소수점 아래 2자리 수 까지
             cg=round(float((cp-rp)/rp*100),2)
-            priceAndChange[od]=[cp,cg]
-        else:
+            priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
+        else: # 맨 처음 거래 change가 없음
             priceAndChange[od]=[cp,0]
     
+    # Chart
     order_list = history.find({},{'order':1})
     price_list = history.find({},{'currentprice':1})
     
@@ -157,14 +163,18 @@ def okoverview(username):
     for history_field in ht:
         od=int(history_field['order'])
         cp=int(history_field['currentprice'])
-        if od>=2:
+        if od>=2: # 2번째 이상의 거래가 발생했다면
             previous_od=od-1
             previous_ht=history.find_one({'order':previous_od})
+            # 이전 order의 currentprice = 현재 order의 recentprice
             rp=int(previous_ht['currentprice'])
+            # 변화량 계산 , 소수점 아래 2자리 수 까지
             cg=round(float((cp-rp)/rp*100),2)
-            priceAndChange[od]=[cp,cg]
+            priceAndChange[od]=[cp,cg] # currentprice가 같을 때를 대비해 order로 구분 짓고, value로 cp,cg를 list로 넣음
+        else: # 맨 처음 거래 change가 없음
             priceAndChange[od]=[cp,0]
-         
+            
+    # Chart            
     order_list = history.find({},{'order':1})
     price_list = history.find({},{'currentprice':1})
     
